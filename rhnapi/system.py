@@ -22,12 +22,13 @@
 
 __author__ = "Stuart Sears"
 
-ent_names = { 'monitoring_entitled'              : 'monitoring',
-              'provisioning_entitled'            : 'provisioning',
-              'management_entitled'              : 'management',
-              'virtualization_platform_entitled' : 'virtualization platform',
-              'virtualization_host_entitled'     : 'virtualization',
-            }
+ent_names = {'monitoring_entitled': 'monitoring',
+             'provisioning_entitled': 'provisioning',
+             'management_entitled': 'management',
+             'virtualization_platform_entitled': 'virtualization platform',
+             'virtualization_host_entitled': 'virtualization',
+             }
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -53,8 +54,10 @@ def addEntitlements(rhn, serverid, entlist):
     """
     try:
         return rhn.session.system.addEntitlements(rhn.key, serverid, entlist) == 1
-    except Exception, E:
-        return rhn.fail(E, "add entitlements %s to server ID %d (%s)" % (','.join(entlist) , serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "add entitlements %s to server ID %d (%s)" % (
+        ','.join(entlist), serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -78,8 +81,9 @@ def addNote(rhn, serverid, note):
     """
     try:
         return rhn.session.system.addNote(rhn.key, serverid, note) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "add note to server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -105,8 +109,9 @@ def applyErrata(rhn, serverid, errlist):
     """
     try:
         return rhn.session.system.applyErrata(rhn.key, serverid, errlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "apply errata to server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -147,8 +152,10 @@ def comparePackages(rhn, serverid1, serverid2):
     """
     try:
         return rhn.session.system.comparePackages(rhn.key, serverid1, serverid2)
-    except Exception, E:
-        return rhn.fail(E, "compare packages on servers %d (%s) and %d (%s)" % (serverid1, getName(rhn, serverid1), serverid2, getName(rhn, serverid2)))
+    except Exception as E:
+        return rhn.fail(E, "compare packages on servers %d (%s) and %d (%s)" % (
+        serverid1, getName(rhn, serverid1), serverid2, getName(rhn, serverid2)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -193,8 +200,10 @@ def comparePackageProfile(rhn, serverid, pkgprofile):
     """
     try:
         return rhn.session.system.comparePackageProfile(rhn.key, serverid, pkgprofile)
-    except Exception, E:
-        return rhn.fail(E, 'compare packages on server %d (%s) to package profile %s' % (serverid, getName(rhn, serverid), pkgprofile))
+    except Exception as E:
+        return rhn.fail(E, 'compare packages on server %d (%s) to package profile %s' % (
+        serverid, getName(rhn, serverid), pkgprofile))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -220,8 +229,9 @@ def convertToFlexEntitlement(rhn, serverids, chanfamily):
     """
     try:
         return rhn.session.system.convertToFlexEntitlement(rhn.key, serverids, chanfamily)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'convert systems to use flex entitlement for channel family %s' % chanfamily)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -243,8 +253,9 @@ def createPackageProfile(rhn, serverid, label, description):
     """
     try:
         rhn.session.system.createPackageProfile(rhn.key, serverid, label, description)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "create package profile %s for serverid %d (%s)" % (label, serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -268,8 +279,9 @@ def createSystemRecord(rhn, serverid, kslabel):
     """
     try:
         return rhn.session.system.createSystemRecord(rhn.key, serverid, kslabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create cobbler system record for server ID %d (%s)' % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -293,13 +305,15 @@ def deleteCustomValues(rhn, serverid, custvals):
     custvals(list/str)      - custom value name/label (or list of)
     """
     if not isinstance(custvals, list):
-        custvals = [ custvals ]
+        custvals = [custvals]
     try:
         return rhn.session.system.deleteCustomValues(rhn.key, serverid, custvals) == 1
-    except Exception, E:
+    except Exception as E:
         val_list = ','.join(custvals)
-        return rhn.fail(E, 'delete one or more of custom values [%s] from server ID %d (%s)' % (val_list, serverid, getName(rhn, serverid)))
-        
+        return rhn.fail(E, 'delete one or more of custom values [%s] from server ID %d (%s)' % (
+        val_list, serverid, getName(rhn, serverid)))
+
+
 # ---------------------------------------------------------------------------- #
 
 def deleteGuestProfiles(rhn, serverid, guestlist):
@@ -322,9 +336,10 @@ def deleteGuestProfiles(rhn, serverid, guestlist):
     guestlist(list/str)     - list of guest names to delete
     """
     try:
-        return  rhn.session.system.deleteGuestProfiles(rhn.key, serverid, guestlist) == 1
-    except Exception, E:
-        return rhn.fail(E, 'remove guest profiles from server %s' % getName(rhn, serverid) )
+        return rhn.session.system.deleteGuestProfiles(rhn.key, serverid, guestlist) == 1
+    except Exception as E:
+        return rhn.fail(E, 'remove guest profiles from server %s' % getName(rhn, serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -349,8 +364,9 @@ def deleteNote(rhn, serverid, noteid):
     """
     try:
         return rhn.session.system.deleteNote(rhn.key, serverid, noteid) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete note %d from server %d (%s)' % (noteid, serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -374,8 +390,9 @@ def deleteNotes(rhn, serverid):
     """
     try:
         return rhn.session.system.deleteNotes(rhn, serverid) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete all notes from server id %d (%s)' % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -399,8 +416,9 @@ def deletePackageProfile(rhn, profileid):
     """
     try:
         return rhn.session.system.deletePackageProfile(rhn, profileid) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete package profile ID %d' % profileid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -421,8 +439,9 @@ def deleteSystems(rhn, serverids):
     """
     try:
         return rhn.session.system.deleteSystems(rhn.key, serverids) == 1
-    except Exception, E:
-        return rhn.fail(E, "delete one or more of systems: [ %s ]" % (",".join([ str(x) for x in serverids ])))
+    except Exception as E:
+        return rhn.fail(E, "delete one or more of systems: [ %s ]" % (",".join([str(x) for x in serverids])))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -446,8 +465,9 @@ def downloadSystemId(rhn, serverid):
     """
     try:
         return rhn.session.system.downloadSystemId(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "download the serverid for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -468,8 +488,10 @@ def getBaseChannel(rhn, serverid):
     """
     try:
         return rhn.session.system.getSubscribedBaseChannel(rhn.key, serverid)['label']
-    except Exception, E:
-        return rhn.fail(E, "retrieve Subscribed Base Channel information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "retrieve Subscribed Base Channel information for server ID %d (%s)" % (
+        serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -489,11 +511,13 @@ def getChildChannels(rhn, serverid):
     serverid(int)            - server ID number
     """
     try:
-        print "Determining child channels subscribed for server %d" % serverid
+        print("Determining child channels subscribed for server %d" % serverid)
         ccarray = rhn.session.system.listSubscribedChildChannels(rhn.key, serverid)
-        return [ x['label'] for x in ccarray ]
-    except Exception, E:
-        return rhn.fail(E, "retrieve Subscribed Child Channel information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+        return [x['label'] for x in ccarray]
+    except Exception as E:
+        return rhn.fail(E, "retrieve Subscribed Child Channel information for server ID %d (%s)" % (
+        serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -522,8 +546,9 @@ def getConnectionPath(rhn, serverid):
     """
     try:
         return rhn.session.system.getConnectionPath(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get list of proxies for server id %d (%s)' % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -557,8 +582,9 @@ def getCpu(rhn, serverid):
     """
     try:
         return rhn.session.system.getCpu(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve CPU information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -582,8 +608,9 @@ def getCustomValues(rhn, serverid):
     """
     try:
         return rhn.session.system.getCustomValues(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve Custom Values set for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -628,8 +655,9 @@ def getDetails(rhn, serverid):
     """
     try:
         return rhn.session.system.getDetails(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve detailed information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -660,8 +688,9 @@ def getDevices(rhn, serverid):
     """
     try:
         return rhn.session.system.getDevices(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve device list for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -693,8 +722,9 @@ def getDmi(rhn, serverid):
     """
     try:
         return rhn.session.system.getDmi(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve DMI information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -718,8 +748,9 @@ def getEntitlements(rhn, serverid):
     """
     try:
         return rhn.session.system.getEntitlements(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list entitlements for system ID %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -750,8 +781,9 @@ def getEventHistory(rhn, serverid):
     """
     try:
         return rhn.session.system.getEventHistory(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get even history for server ID %d (%s)' % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -780,8 +812,9 @@ def getId(rhn, servername):
     """
     try:
         return rhn.session.system.getId(rhn.key, servername)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "get system id(s) for server %s" % (servername))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -804,8 +837,9 @@ def getLastCheckin(rhn, serverid):
     """
     try:
         return getName(rhn, serverid)['last_checkin']
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "get last check-in sate for serverid %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -832,8 +866,9 @@ def getMemory(rhn, serverid):
     """
     try:
         return rhn.session.system.getMemory(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve Memory information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -860,8 +895,9 @@ def getName(rhn, serverid):
     """
     try:
         return rhn.session.system.getName(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get Name and last checkin for server ID %d' % serverid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -888,8 +924,9 @@ def getNetwork(rhn, serverid):
     """
     try:
         return rhn.session.system.getNetwork(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve Network information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -920,8 +957,10 @@ def getNetworkDevices(rhn, serverid):
     """
     try:
         return rhn.session.system.getNetworkDevices(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "retrieve Network Device information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "retrieve Network Device information for server ID %d (%s)" % (
+        serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -945,8 +984,9 @@ def getRegistrationDate(rhn, serverid):
     """
     try:
         return rhn.session.system.getRegistrationDate(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve the Registration Date for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -976,7 +1016,7 @@ def getRelevantErrata(rhn, serverid):
     """
     try:
         return rhn.session.system.getRelevantErrata(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "get relevant errata for server ID (%d) (%s)" % (serverid, getName(rhn, serverid)))
 
 
@@ -1009,8 +1049,10 @@ def getRelevantErrataByType(rhn, serverid, errtype):
     """
     try:
         return rhn.session.system.getRelevantErrata(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "get relevant errata of type %s for server ID (%d) (%s)" % ( errtype, serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "get relevant errata of type %s for server ID (%d) (%s)" % (
+        errtype, serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1021,9 +1063,10 @@ def getRelevantSecurityErrata(rhn, serverid):
     returns getRelevantErrataByType with a 'Security Advisory' argument
     """
     try:
-        return getRelevantErrataByType(rhn.key, serverid, errtype = 'Security Advisory')
-    except Exception, E:
+        return getRelevantErrataByType(rhn.key, serverid, errtype='Security Advisory')
+    except Exception as E:
         return rhn.fail(E, "get security errata for server ID (%d) (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1034,9 +1077,10 @@ def getRelevantBugfixErrata(rhn, serverid):
     returns getRelevantErrataByType with a 'Bug Fix Advisory' argument
     """
     try:
-        return getRelevantErrataByType(rhn.key, serverid, errtype = 'Bug Fix Advisory')
-    except Exception, E:
+        return getRelevantErrataByType(rhn.key, serverid, errtype='Bug Fix Advisory')
+    except Exception as E:
         return rhn.fail(E, "get security errata for server ID (%d) (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1047,9 +1091,10 @@ def getRelevantEnhancementErrata(rhn, serverid):
     returns getRelevantErrataByType with a 'Product Enhancement Advisory' argument
     """
     try:
-        return getRelevantErrataByType(rhn.key, serverid, errtype = 'Product Enhancement Advisory')
-    except Exception, E:
+        return getRelevantErrataByType(rhn.key, serverid, errtype='Product Enhancement Advisory')
+    except Exception as E:
         return rhn.fail(E, "get security errata for server ID (%d) (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1073,8 +1118,10 @@ def getRunningKernel(rhn, serverid):
     """
     try:
         return rhn.session.system.getRunningKernel(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "retrieve running kernel information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "retrieve running kernel information for server ID %d (%s)" % (
+        serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1111,8 +1158,9 @@ def getScriptActionDetails(rhn, actionid):
     """
     try:
         return rhn.session.system.getScriptActionDetails(rhn.key, actionid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get script action information for action ID %d' % actionid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1142,8 +1190,9 @@ def getScriptResults(rhn, actionid):
     """
     try:
         return rhn.session.system.getScriptResults(rhn.key, actionid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve results for script ID %d" % actionid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1184,8 +1233,10 @@ def getSubscribedBaseChannel(rhn, serverid):
     """
     try:
         return rhn.session.system.getSubscribedBaseChannel(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "retrieve base channel information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E,
+                        "retrieve base channel information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1214,8 +1265,10 @@ def getUnscheduledErrata(rhn, serverid):
     """
     try:
         return rhn.session.system.getUnscheduledErrata(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "retrieve Unscheduled Errata information for server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "retrieve Unscheduled Errata information for server ID %d (%s)" % (
+        serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1250,10 +1303,11 @@ def getVariables(rhn, serverid):
     """
     try:
         return rhn.session.system.getVariables(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "retrieve kickstart variables for server  ID %d (%s)" % (serverid, getName(rhn, serverid))) 
+    except Exception as E:
+        return rhn.fail(E, "retrieve kickstart variables for server  ID %d (%s)" % (serverid, getName(rhn, serverid)))
 
-# ---------------------------------------------------------------------------- #
+    # ---------------------------------------------------------------------------- #
+
 
 def isNvreInstalled(rhn, serverid, name, version, release, epoch=None):
     """
@@ -1281,8 +1335,10 @@ def isNvreInstalled(rhn, serverid, name, version, release, epoch=None):
             return rhn.session.system.isNvreInstalled(rhn.key, serverid, name, version, release, epoch) == 1
         else:
             return rhn.session.system.isNvreInstalled(rhn.key, serverid, name, version, release) == 1
-    except Exception, E:
-        return rhn.fail(E, "determine if the given package %s is installed on server ID %d (%s)" %(pkgstr, serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "determine if the given package %s is installed on server ID %d (%s)" % (
+        pkgstr, serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1307,13 +1363,13 @@ def joinSystemGroup(rhn, serverid, grpid):
     """
     try:
         return rhn.session.system.setGroupMembership(rhn.key, serverid, grpid, 1) == 1
-    except Exception, E:
-        return rhn.fail(E,'set group membership for server id %d' % (serverid))
+    except Exception as E:
+        return rhn.fail(E, 'set group membership for server id %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
 def leaveSystemGroup(rhn, serverid, grpid):
-
     """
     API:
     none, special case of
@@ -1334,9 +1390,10 @@ def leaveSystemGroup(rhn, serverid, grpid):
     grpid(int)              - server group id
     """
     try:
-        return rhn.session.system.setGroupMembership(rhn.key, serverid, grpid, 0 ) == 1
-    except Exception, E:
-        return rhn.fail(E,'set group membership for server id %d' % (serverid))
+        return rhn.session.system.setGroupMembership(rhn.key, serverid, grpid, 0) == 1
+    except Exception as E:
+        return rhn.fail(E, 'set group membership for server id %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1361,8 +1418,10 @@ def listActivationKeys(rhn, serverid):
     """
     try:
         return rhn.session.system.listActivationKeys(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "List activation keys used to register server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E,
+                        "List activation keys used to register server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1388,8 +1447,9 @@ def listActiveSystems(rhn):
     """
     try:
         return rhn.session.system.listActiveSystems(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list active systems for user %s" % (rhn.login))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1418,8 +1478,9 @@ def listAdministrators(rhn, serverid):
     """
     try:
         return rhn.session.system.listAdministrators(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "retrieve Administrator list for serverid %d" % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1451,8 +1512,9 @@ def listBaseChannels(rhn, serverid):
     """
     try:
         return rhn.session.system.listBaseChannels(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail("E", "list Base Channels available to server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1485,8 +1547,9 @@ def listChildChannels(rhn, serverid):
     """
     try:
         return rhn.session.system.listChildChannels(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail("E", "list Child Channels available to Server ID %d (%s)" % (serverid), getName(rhn, serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1515,8 +1578,9 @@ def listDuplicatesByHostname(rhn):
     """
     try:
         return rhn.session.system.listDuplicatesByHostname(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list duplicate servers by hostname")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1546,8 +1610,9 @@ def listDuplicatesByIp(rhn):
     """
     try:
         return rhn.session.system.listDuplicatesByIp(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list duplicate servers by IP Address")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1576,8 +1641,9 @@ def listDuplicatesByMac(rhn):
     """
     try:
         return rhn.session.system.listDuplicatesByMac(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list duplicate servers by MAC Address")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1605,8 +1671,9 @@ def listEligibleFlexGuests(rhn):
     """
     try:
         return rhn.session.system.listEligibleFlexGuests(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list eligible flex guests")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1634,8 +1701,9 @@ def listFlexGuests(rhn):
     """
     try:
         return rhn.session.system.listFlexGuests(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list flex guests")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1665,8 +1733,9 @@ def listGroups(rhn, serverid):
     """
     try:
         return rhn.session.system.listGroups(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list available groups for server ID %d (%s) " % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1700,11 +1769,12 @@ def listInactiveSystems(rhn, days=None):
             return rhn.session.system.listInactiveSystems(rhn.key, days)
         else:
             return rhn.session.system.listInactiveSystems(rhn.key)
-    except Exception, E:
+    except Exception as E:
         if days is not None:
             return rhn.fail(E, 'list systems inactive for %d days' % days)
         else:
             return rhn.fail(E, 'list inactive systems')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1742,8 +1812,9 @@ def listLatestAvailablePackage(rhn, serverids, pkgname):
     """
     try:
         return rhn.session.system.listLatestAvailablePackage(rhn.key, serverids, pkgname)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list latest versions of %s for the given lits of servers' % pkgname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1775,8 +1846,10 @@ def listLatestInstallablePackages(rhn, serverid):
     """
     try:
         return rhn.session.system.listLatestInstallablePackages(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "list latest installable packages for server id %d (%s)" % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E,
+                        "list latest installable packages for server id %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1811,8 +1884,10 @@ def listLatestUpgradeablePackages(rhn, serverid):
     """
     try:
         return rhn.session.system.listLatestUpgradeablePackages(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, "list latest Upgradeable packages for serverid %d (%s) " % (serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E,
+                        "list latest Upgradeable packages for serverid %d (%s) " % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1846,13 +1921,15 @@ def listNewerInstalledPackages(rhn, serverid, pkgname, pkgver, pkgrel, pkgepoch=
     *pkgepoch(str)          - package epoch
     """
     if pkgepoch.strip() != '':
-        pkginfo = "%s:%s-%s-%s" %(pkgepoch, pkgname, pkgver, pkgrel)
+        pkginfo = "%s:%s-%s-%s" % (pkgepoch, pkgname, pkgver, pkgrel)
     else:
-        pkginfo = "%s-%s-%s" %(pkgname, pkgver, pkgrel)
+        pkginfo = "%s-%s-%s" % (pkgname, pkgver, pkgrel)
     try:
         return rhn.session.system.listNewerInstalledPackages(rhn, serverid, pkgname, pkgver, pkgrel, pkgepoch)
-    except Exception, E:
-        return rhn.fail(E, "List installed packages newer than %s on server %d (%s) " % ( pkginfo, serverid, getName(rhn, serverid) ) )
+    except Exception as E:
+        return rhn.fail(E, "List installed packages newer than %s on server %d (%s) " % (
+        pkginfo, serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1883,12 +1960,13 @@ def listNotes(rhn, serverid):
     """
     try:
         return rhn.session.system.listNotes(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E, 'list notes for system %d (%s)'%(serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, 'list notes for system %d (%s)' % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
-def listOlderInstalledPackages(rhn, serverid, pkgname, pkgver, pkgrel, pkgepoch="" ):
+def listOlderInstalledPackages(rhn, serverid, pkgname, pkgver, pkgrel, pkgepoch=""):
     """
     API:
     system.listOlderInstalledPackages
@@ -1918,13 +1996,15 @@ def listOlderInstalledPackages(rhn, serverid, pkgname, pkgver, pkgrel, pkgepoch=
     *pkgepoch(str)          - package epoch
     """
     if pkgepoch.strip() != '':
-        pkginfo = "%s:%s-%s-%s" %(pkgepoch, pkgname, pkgver, pkgrel)
+        pkginfo = "%s:%s-%s-%s" % (pkgepoch, pkgname, pkgver, pkgrel)
     else:
-        pkginfo = "%s-%s-%s" %(pkgname, pkgver, pkgrel)
+        pkginfo = "%s-%s-%s" % (pkgname, pkgver, pkgrel)
     try:
         return rhn.session.system.listOlderInstalledPackages(rhn, serverid, serverid, pkgname, pkgver, pkgrel, pkgepoch)
-    except Exception, E:
-        return rhn.fail(E, "List installed packages older than %s on server %d (%s)" % (pkginfo, serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "List installed packages older than %s on server %d (%s)" % (
+        pkginfo, serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1952,8 +2032,9 @@ def listOutOfDateSystems(rhn):
     """
     try:
         return rhn.session.system.listOutOfDateSystems(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "get a list of out of date systems")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1981,8 +2062,9 @@ def listPackageProfiles(rhn):
     """
     try:
         return rhn.session.system.listPackageProfiles(rhn.key)
-    except Exception, E:
-        return rhn.fail(E, "list package profiles for your organization" )
+    except Exception as E:
+        return rhn.fail(E, "list package profiles for your organization")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2014,8 +2096,9 @@ def listPackages(rhn, serverid):
     """
     try:
         return rhn.session.system.listPackages(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "Get a list of installed packages for server %d" % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2036,7 +2119,7 @@ def listPackagesFromChannel(rhn, serverid, chanlabel):
     """
     try:
         return rhn.session.system.listPackagesFromChannel(rhn, serverid, chanlabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "Get a list of installed packages for server %d from channel %s" % (serverid, chanlabel))
 
 
@@ -2069,8 +2152,9 @@ def listSubscribableBaseChannels(rhn, serverid):
     """
     try:
         return rhn.session.system.listSubscribableBaseChannels(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail("E", "list Base Channels available to server ID %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2102,8 +2186,9 @@ def listSubscribableChildChannels(rhn, serverid):
     """
     try:
         return rhn.session.system.listSubscribableChildChannels(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail("E", "list Child Channels available to Server ID %d (%s)" % (serverid), getName(rhn, serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2135,8 +2220,9 @@ def listSubscribedChildChannels(rhn, serverid):
     """
     try:
         return rhn.session.system.listSubscribedChildChannels(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list subscribed child channels for server %d" % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2193,8 +2279,9 @@ def listSystemEvents(rhn, serverid):
     """
     try:
         return rhn.session.system.listSystemEvents(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "Get a list of system events for server %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2226,8 +2313,9 @@ def listSystems(rhn, rhnuser=None):
         rhnuser = rhn.login
     try:
         return rhn.session.system.listUserSystems(rhn.key, rhnuser)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list systems for user %s" % (rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2256,8 +2344,9 @@ def listSystemsWithPackageId(rhn, pkgid):
     """
     try:
         return rhn.session.system.listSystemsWithPackage(rhn.key, pkgid)
-    except Exception, E:
-        return rhn.fail(E,'list systems with package ID %d installed' % pkgid)
+    except Exception as E:
+        return rhn.fail(E, 'list systems with package ID %d installed' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2286,11 +2375,12 @@ def listSystemsWithPackageNVR(rhn, pkgname, pkgver, pkgrel):
     pkgver(str)             - package version
     pkgrel(str)             - package release
     """
-    pkginfo = "%s-%s-%s" %(pkgname, pkgver, pkgrel)
+    pkginfo = "%s-%s-%s" % (pkgname, pkgver, pkgrel)
     try:
         return rhn.session.system.listSystemsWithPackage(rhn.key, pkgname, pkgver, pkgrel)
-    except Exception, E:
-        return rhn.fail(E,'list systems with package "%s" installed' % pkginfo)
+    except Exception as E:
+        return rhn.fail(E, 'list systems with package "%s" installed' % pkginfo)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2319,8 +2409,9 @@ def listUngroupedSystems(rhn):
     """
     try:
         return rhn.session.system.listUngroupedSystems(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "list systems which are not in any system groups")
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2354,10 +2445,11 @@ def listUserSystems(rhn, rhnuser=None):
             return rhn.session.system.listUserSystems(rhn.key)
         else:
             return rhn.session.system.listUserSystems(rhn.key, rhnuser)
-    except Exception, E:
+    except Exception as E:
         if rhnuser is None:
             rhnuser = rhn.login
         return rhn.fail(E, "list systems for user %s" % (rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2388,8 +2480,9 @@ def listVirtualGuests(rhn, vhostid):
     """
     try:
         return rhn.session.system.listVirtualGuests(rhn.key, vhostid)
-    except Exception, E:
-        return rhn.fail(E,'list virtual guests on host with sid %d' % (vhostid))
+    except Exception as E:
+        return rhn.fail(E, 'list virtual guests on host with sid %d' % (vhostid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2417,8 +2510,9 @@ def listVirtualHosts(rhn):
     """
     try:
         return rhn.session.listVirtualHosts(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list virtual hosts')
+    except Exception as E:
+        return rhn.fail(E, 'list virtual hosts')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2442,11 +2536,12 @@ def obtainReactivationKey(rhn, server_cert_or_id):
     """
     try:
         return rhn.session.system.obtainReactivationKey(rhn.key, server_cert_or_id)
-    except Exception, E:
+    except Exception as E:
         if isinstance(server_cert_or_id, str):
             return rhn.fail(E, 'get reactivation key using systemid file')
         else:
             return rhn.fail(E, "Get a reactivation key for server %d" % (server_cert_or_id))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2478,8 +2573,9 @@ def provisionSystem(rhn, serverid, kslabel, earliest_start=None):
             return isinstance(rhn.session.system.provisionSystem(rhn.key, serverid, kslabel, earliest_start), int)
         else:
             return isinstance(rhn.session.system.provisionSystem(rhn.key, serverid, kslabel), int)
-    except Exception, E:
-        return rhn.fail(E, 'provision system id %d (%s)' % ( serverid, getName(rhn, serverid) ))
+    except Exception as E:
+        return rhn.fail(E, 'provision system id %d (%s)' % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2509,13 +2605,14 @@ def provisionVirtualGuest(rhn, serverid, guestname, kslabel, **kwargs):
     *vcpus(int)             - number of vcpus (default 1)
     *storageMb(int)         - Amount of storage to assign (default 2048)
     """
-    vmsettings = { 'memoryMb' :
-    256, 'vcpus' : 1, 'storageMb' : 2048 }
+    vmsettings = {'memoryMb':
+                      256, 'vcpus': 1, 'storageMb': 2048}
     try:
         vmsettings.update(kwargs)
         return rhn.session.system.provisionVirtualGuest(rhn.key, serverid, guestname, kslabel, **vmsettings) == 1
-    except Exception, E:
-        return rhn.fail(E, "provision new VM %s on server %s" %(guestname, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, "provision new VM %s on server %s" % (guestname, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2536,8 +2633,9 @@ def removeEntitlements(rhn, serverid, entslist):
     """
     try:
         return rhn.session.system.removeEntitlements(rhn.key, serverid, entslist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "remove entitlements from serverid %d" % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2564,13 +2662,15 @@ def scheduleApplyErrata(rhn, serverids, errataids, runafter=None):
     # handle the multiple parameter combinations
     try:
         if not isinstance(serverids, list):
-            serverids = [ serverids ]
+            serverids = [serverids]
         if runafter is None:
             return rhn.session.system.scheduleApplyErrata(rhn.key, serverids, errataids) == 1
         else:
             return rhn.session.system.scheduleApplyErrata(rhn.key, serverids, errataids, runafter) == 1
-    except Exception, E:
-        return rhn.fail(E, 'schedule application of errata [%s] for server id(s) [%s]' %(','.join(errataids), ''.join(map(str,serverids))))
+    except Exception as E:
+        return rhn.fail(E, 'schedule application of errata [%s] for server id(s) [%s]' % (
+        ','.join(errataids), ''.join(map(str, serverids))))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2600,9 +2700,10 @@ def scheduleGuestAction(rhn, guestid, guestaction, runafter=None):
             return isinstance(rhn.session.system.scheduleGuestAction(rhn.key, guestid, guestaction, runafter), int)
         else:
             return isinstance(rhn.session.system.scheduleGuestAction(rhn.key, guestid, guestaction), int)
-    except Exception, E:
-        return rhn.fail(E, 'schedule guest %s for guest id %s' %(guestaction, str(guestid)))
-            
+    except Exception as E:
+        return rhn.fail(E, 'schedule guest %s for guest id %s' % (guestaction, str(guestid)))
+
+
 # ---------------------------------------------------------------------------- #
 
 def scheduleHardwareRefresh(rhn, serverid, runafter):
@@ -2626,8 +2727,9 @@ def scheduleHardwareRefresh(rhn, serverid, runafter):
     """
     try:
         return rhn.session.system.scheduleHardwareRefresh(rhn.key, serverid, runafter) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "schedule hardware refresh for server id %d (%s)" % (serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2653,10 +2755,11 @@ def schedulePackageInstall(rhn, serverid, pkgids, runafter):
     """
     try:
         return rhn.session.system.schedulePackageInstall(rhn.key, serverid, pkgids, runafter) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "Schedule the installation of packages [%s] on server %d (%s)" % (','.join(map(str, pkgids)),
-                                                                         serverid,
-                                                                         getName(rhn, serverid)) )
+                                                                                             serverid,
+                                                                                             getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2681,8 +2784,9 @@ def schedulePackageRefresh(rhn, serverid, runafter):
     """
     try:
         return isinstance(rhn.session.system.schedulePackageRefresh(rhn.key, serverid, runafter), int)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "remove entitlements for server %d (%s)" % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2708,12 +2812,14 @@ def schedulePackageRemove(rhn, serverid, pkgids, runafter):
     """
     try:
         if not isinstance(pkgids, list):
-            pkgids = [ pkgids ]
+            pkgids = [pkgids]
         return rhn.session.system.schedulePackageRemove(rhn.key, serverid, pkgids, runafter) == 1
-    except Exception, E:
-        return rhn.fail(E, "Schedule the removal of package ids [%s] from server %d (%s)" % ( ','.join(map(str, pkgids),
-                                                                            serverid,
-                                                                            getName(rhn, serverid))))
+    except Exception as E:
+        return rhn.fail(E, "Schedule the removal of package ids [%s] from server %d (%s)" % (
+        ','.join(list(map(str, pkgids)),
+                 serverid,
+                 getName(rhn, serverid))))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2734,8 +2840,9 @@ def scheduleReboot(rhn, serverid, runafter):
     """
     try:
         rhn.session.system.scheduleReboot(rhn.key, int(serverid), runafter)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "schedule a reboot for server ID %d" % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2763,15 +2870,16 @@ def scheduleScriptRun(rhn, serverids, username, grpname, timeout, script, runaft
     runafter(DateTime)      - earliest date/time for script run (ios8601 format)
     """
     if not isinstance(serverids, list):
-        serverids = [ serverids ]
-    args = [ serverids, username, grpname, timeout, script ]
+        serverids = [serverids]
+    args = [serverids, username, grpname, timeout, script]
     if runafter is not None:
         args.append(runafter)
     try:
         return isinstance(rhn.session.system.scheduleScriptRun(rhn.key, *args), int)
 
-    except Exception, E:
-        return rhn.fail(E,'schedule script run on servers [%s]' % (','.join(serverids)))
+    except Exception as E:
+        return rhn.fail(E, 'schedule script run on servers [%s]' % (','.join(serverids)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2799,8 +2907,9 @@ def scheduleSyncPackagesWithSystem(rhn, serverid, sourceid, pkgids, runafter):
     """
     try:
         return rhn.session.system.scheduleSyncPackagesWithSystem(rhn.key, serverid, sourceid, pkgids, runafter) == 1
-    except Exception, E:
-        return rhn.fail(E,'schedule package sync from server %d to server %d' % (sourceid, serverid))
+    except Exception as E:
+        return rhn.fail(E, 'schedule package sync from server %d to server %d' % (sourceid, serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2831,8 +2940,9 @@ def searchByName(rhn, regex):
     """
     try:
         return rhn.session.system.searchByName(rhn.key, regex)
-    except Exception, E:
-        return rhn.fail(E,'search for servers matching regex "%s"' % (regex))
+    except Exception as E:
+        return rhn.fail(E, 'search for servers matching regex "%s"' % (regex))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2858,8 +2968,9 @@ def setBaseChannel(rhn, serverid, chanlabel):
     """
     try:
         return rhn.session.system.setBaseChannel(rhn.key, serverid, chanlabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'set base channel for server ID %d to %s' % (serverid, chanlabel))
+    except Exception as E:
+        return rhn.fail(E, 'set base channel for server ID %d to %s' % (serverid, chanlabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2884,9 +2995,10 @@ def setChildChannels(rhn, serverid, chanlist):
     chanlist([str])        - list of child channel labels
     """
     try:
-        return rhn.session.setChildChannels(rhn.key, serverid, chanlist) == 1
-    except Exception, E:
-        return rhn.fail(E,'subscribe system %d to child channels [%s]' % (serverid, ','.join(chanlist)))
+        return rhn.session.system.setChildChannels(rhn.key, serverid, chanlist) == 1
+    except Exception as E:
+        return rhn.fail(E, 'subscribe system %d to child channels [%s]' % (serverid, ','.join(chanlist)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2913,8 +3025,9 @@ def setCustomValues(rhn, serverid, details):
     """
     try:
         return rhn.session.system.setCustomValues(rhn.key, serverid, details) == 1
-    except Exception, E:
-        return rhn.fail(E, "set custom details for server ID %d" % (serverid) )
+    except Exception as E:
+        return rhn.fail(E, "set custom details for server ID %d" % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2946,8 +3059,9 @@ def setCustomValuesByArg(rhn, serverid, **kwargs):
     """
     try:
         return rhn.session.system.setCustomValues(rhn.key, serverid, kwargs) == 1
-    except Exception, E:
-        return rhn.fail(E, "set custom details for server %s" % (getName(rhn, serverid)) )
+    except Exception as E:
+        return rhn.fail(E, "set custom details for server %s" % (getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2988,8 +3102,9 @@ def setDetails(rhn, serverid, serverdetails):
     """
     try:
         return rhn.session.system.setDetails(rhn.key, serverid, serverdetails) == 1
-    except Exception, E:
-        return rhn.fail(E,'set details for server id %d' % (serverid))
+    except Exception as E:
+        return rhn.fail(E, 'set details for server id %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3028,8 +3143,9 @@ def setDetailsByArg(rhn, serverid, **kwargs):
     """
     try:
         return rhn.session.system.setDetails(rhn.key, serverid, kwargs) == 1
-    except Exception, E:
-        return rhn.fail(E,'set details for server id %d' % (serverid))
+    except Exception as E:
+        return rhn.fail(E, 'set details for server id %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3056,8 +3172,9 @@ def setGroupMembership(rhn, serverid, grpid, grpmember=1):
     """
     try:
         return rhn.session.system.setGroupMembership(rhn.key, serverid, grpid, grpmember) == 1
-    except Exception, E:
-        return rhn.fail(E,'set group membership for server id %d' % (serverid))
+    except Exception as E:
+        return rhn.fail(E, 'set group membership for server id %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3082,8 +3199,9 @@ def setGuestCpus(rhn, guestid, cpucount):
     """
     try:
         return isinstance(rhn.session.system.setGuestCpus(rhn.key, guestid, cpucount), int)
-    except Exception, E:
-        return rhn.fail(E,'set CPUs to %d for virtual guest id %d' % (cpucount, guestid))
+    except Exception as E:
+        return rhn.fail(E, 'set CPUs to %d for virtual guest id %d' % (cpucount, guestid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3108,8 +3226,9 @@ def setGuestMemory(rhn, guestid, memqty):
     """
     try:
         return isinstance(rhn.session.system.setGuestMemory(rhn.key, guestid, memqty), int)
-    except Exception, E:
-        return rhn.fail(E,'set memory for virtual guest %d to %d Mb' % (guestid, memqty))
+    except Exception as E:
+        return rhn.fail(E, 'set memory for virtual guest %d to %d Mb' % (guestid, memqty))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3134,8 +3253,9 @@ def setLockStatus(rhn, serverid, islocked):
     """
     try:
         return rhn.session.system.setlockStatus(rhn.key, serverid, islocked) == 1
-    except Exception, E:
-        return rhn.fail(E,'lock or unlock server %d ' % (serverid))
+    except Exception as E:
+        return rhn.fail(E, 'lock or unlock server %d ' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3160,8 +3280,9 @@ def setProfileName(rhn, serverid, servername):
     """
     try:
         return rhn.session.system.setProfileName(rhn.key, serverid, servername) == 1
-    except Exception, E:
-        return rhn.fail(E,'rename server id %d to %s' % (serverid, servername))
+    except Exception as E:
+        return rhn.fail(E, 'rename server id %d to %s' % (serverid, servername))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3191,9 +3312,10 @@ def setVariables(rhn, serverid, netboot, ksvars):
     value pair
     """
     try:
-        return rhn.session.system.setVariables (rhn.key, serverid, netboot, ksvars) == 1
-    except Exception, E:
-        return rhn.fail(E,'set variables for server %d' % (serverid))
+        return rhn.session.system.setVariables(rhn.key, serverid, netboot, ksvars) == 1
+    except Exception as E:
+        return rhn.fail(E, 'set variables for server %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3226,9 +3348,10 @@ def setVariablesByArg(rhn, serverid, netboot, **kwargs):
     plus key=value pairs for each variable you wish to set.
     """
     try:
-        return rhn.session.system.setVariables (rhn.key, serverid, netboot, kwargs) == 1
-    except Exception, E:
-        return rhn.fail(E,'set variables for server %d' % (serverid))
+        return rhn.session.system.setVariables(rhn.key, serverid, netboot, kwargs) == 1
+    except Exception as E:
+        return rhn.fail(E, 'set variables for server %d' % (serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3250,8 +3373,10 @@ def tagLatestSnapshot(rhn, serverid, tagname):
     """
     try:
         return rhn.session.system.tagLatestSnapshot(rhn.key, serverid, tagname) == 1
-    except Exception, E:
-        return rhn.fail(E, 'apply tag  %s to latest snapshot of system %d (%s)' % (tagname, serverid, getName(rhn, serverid)))
+    except Exception as E:
+        return rhn.fail(E, 'apply tag  %s to latest snapshot of system %d (%s)' % (
+        tagname, serverid, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3279,9 +3404,10 @@ def upgradeEntitlement(rhn, serverid, entlabel):
     """
     try:
         return rhn.session.system.upgradeEntitlement(rhn.key, serverid, entlabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'add entitlement %s to server id %d' % (entlabel, serverid))
-        
+    except Exception as E:
+        return rhn.fail(E, 'add entitlement %s to server id %d' % (entlabel, serverid))
+
+
 # ---------------------------------------------------------------------------- #
 
 def whoRegistered(rhn, serverid):
@@ -3304,13 +3430,13 @@ def whoRegistered(rhn, serverid):
     """
     try:
         return rhn.session.system.whoRegistered(rhn.key, serverid)
-    except Exception, E:
-        return rhn.fail(E,'discover user who registered server id %d' % (serverid))
+    except Exception as E:
+        return rhn.fail(E, 'discover user who registered server id %d' % (serverid))
 
 
 # ------------------------- system.config namespace -------------------------- #
 
-def addConfigChannels(rhn, serverids, chanlabels, prepend):        
+def addConfigChannels(rhn, serverids, chanlabels, prepend):
     """
     API:
     system.config.addChannels
@@ -3336,14 +3462,16 @@ def addConfigChannels(rhn, serverids, chanlabels, prepend):
                               of the subscribed channel list.
     """
     if not isinstance(serverids, list):
-        serverids = [ serverids ]
+        serverids = [serverids]
     if not isinstance(chanlabels, list):
-        chanlabels = [ chanlabels ]
+        chanlabels = [chanlabels]
     try:
         return rhn.session.system.config.addChannels(rhn.key, serverids, chanlabels, prepend) == 1
-    except Exception, E:
-        return rhn.fail(E, 'add config channel(s) [%s] to server(s) [%s]'%(','.join(chanlabels),
-            ','.join([getName(rhn, x) for x in serverids ])))
+    except Exception as E:
+        return rhn.fail(E, 'add config channel(s) [%s] to server(s) [%s]' % (','.join(chanlabels),
+                                                                             ','.join(
+                                                                                 [getName(rhn, x) for x in serverids])))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3380,13 +3508,15 @@ def createOrUpdatePath(rhn, serverid, path, local, pathobj, isdir=False):
     * revision(int)                 - revison of updated file (auto-incremented)
     """
     try:
-        return isinstance(rhn.session.system.config.createOrUpdatePath(rhn.key, serverid, path, isdir, pathobj, local), dict)
-    except Exception, E:
+        return isinstance(rhn.session.system.config.createOrUpdatePath(rhn.key, serverid, path, isdir, pathobj, local),
+                          dict)
+    except Exception as E:
         if local == 1:
-            return rhn.fail(E, 'update path %s in system %s local override channel' %(path, getName(rhn, serverid)))
+            return rhn.fail(E, 'update path %s in system %s local override channel' % (path, getName(rhn, serverid)))
         else:
-            return rhn.fail(E, 'update path %s in system %s sandbox' %(path, getName(rhn, serverid)))
-            
+            return rhn.fail(E, 'update path %s in system %s sandbox' % (path, getName(rhn, serverid)))
+
+
 # ---------------------------------------------------------------------------- #
 
 def createOrUpdatePathByArg(rhn, serverid, path, isdir=False, local=1, **kwargs):
@@ -3423,13 +3553,15 @@ def createOrUpdatePathByArg(rhn, serverid, path, isdir=False, local=1, **kwargs)
     * revision(int)                 - revison of updated file (auto-incremented)
     """
     try:
-        return isinstance(rhn.session.system.config.createOrUpdatePath(rhn.key, serverid, path, isdir, kwargs, local), dict)
-    except Exception, E:
+        return isinstance(rhn.session.system.config.createOrUpdatePath(rhn.key, serverid, path, isdir, kwargs, local),
+                          dict)
+    except Exception as E:
         if local == 1:
-            return rhn.fail(E, 'update path %s in system %s local override channel' %(path, getName(rhn, serverid)))
+            return rhn.fail(E, 'update path %s in system %s local override channel' % (path, getName(rhn, serverid)))
         else:
-            return rhn.fail(E, 'update path %s in system %s sandbox' %(path, getName(rhn, serverid)))
-            
+            return rhn.fail(E, 'update path %s in system %s sandbox' % (path, getName(rhn, serverid)))
+
+
 # ---------------------------------------------------------------------------- #
 
 def createOrUpdateSymlink(rhn, serverid, path, local, pathobj):
@@ -3459,12 +3591,14 @@ def createOrUpdateSymlink(rhn, serverid, path, local, pathobj):
     *revision(int)          - revison of updated file 
     """
     try:
-        return isinstance(rhn.session.system.config.createOrUpdateSymlink(rhn.key, serverid, path, pathobj, local), dict)
-    except Exception, E:
+        return isinstance(rhn.session.system.config.createOrUpdateSymlink(rhn.key, serverid, path, pathobj, local),
+                          dict)
+    except Exception as E:
         if local == 1:
-            return rhn.fail(E, 'update symlink %s in system %s local override channel' %(path, getName(rhn, serverid)))
+            return rhn.fail(E, 'update symlink %s in system %s local override channel' % (path, getName(rhn, serverid)))
         else:
-            return rhn.fail(E, 'update symlink %s in system %s sandbox' %(path, getName(rhn, serverid)))
+            return rhn.fail(E, 'update symlink %s in system %s sandbox' % (path, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3497,13 +3631,14 @@ def createOrUpdateSymlinkByArg(rhn, serverid, path, local=1, **kwargs):
     """
     try:
         if rhn.debug:
-            print rhn.key, serverid, path, kwargs, local
+            print(rhn.key, serverid, path, kwargs, local)
         return isinstance(rhn.session.system.config.createOrUpdateSymlink(rhn.key, serverid, path, kwargs, local), dict)
-    except Exception, E:
+    except Exception as E:
         if local == 1:
-            return rhn.fail(E, 'update symlink %s in system %s local override channel' %(path, getName(rhn, serverid)))
+            return rhn.fail(E, 'update symlink %s in system %s local override channel' % (path, getName(rhn, serverid)))
         else:
-            return rhn.fail(E, 'update symlink %s in system %s sandbox' %(path, getName(rhn, serverid)))
+            return rhn.fail(E, 'update symlink %s in system %s sandbox' % (path, getName(rhn, serverid)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3528,11 +3663,12 @@ def deleteConfigFiles(rhn, serverid, pathlist, local):
     local(bool)             - delete from local channel(true) or sandbox(false).
     """
     if not isinstance(pathlist, list):
-        pathlist = [ pathlist ]
+        pathlist = [pathlist]
     try:
         return rhn.session.system.config.deleteFiles(rhn.key, serverid, pathlist, local) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete files from server')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3560,11 +3696,12 @@ def deployAllConfigChannels(rhn, serverids, runafter=None):
     # encode a DateTime instance (defaults to local time)
     applyafter = rhn.encodeDate(runafter)
     if not isinstance(serverids, list):
-        serverids = [ serverids ]
+        serverids = [serverids]
     try:
         return rhn.session.system.config.deployAll(rhn.key, serverids, applyafter) == 1
-    except Exception, E:
-        return rhn.fail(E, 'schedule the requested deploy action' )
+    except Exception as E:
+        return rhn.fail(E, 'schedule the requested deploy action')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3587,8 +3724,9 @@ def listConfigChannels(rhn, serverid):
     """
     try:
         return rhn.session.system.config.listChannels(rhn.key, serverid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list config channels for server %d' % serverid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3615,8 +3753,9 @@ def listConfigFiles(rhn, serverid, local=1):
     """
     try:
         return rhn.session.system.config.listFiles(rhn.key, serverid, local)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list files on server id %d' % serverid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3642,12 +3781,13 @@ def lookupConfigFileInfo(rhn, serverid, pathlist, local=1):
                               search sandbox (0)
     """
     if not isinstance(pathlist, list):
-        pathlist = [ pathlist ]
+        pathlist = [pathlist]
     try:
         return rhn.session.system.config.lookupFileInfo(rhn.key, serverid, pathlist, local)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get file revision info for files [%s]' % ','.join(pathlist))
-     
+
+
 # ---------------------------------------------------------------------------- #
 
 def removeConfigChannels(rhn, serverids, cfglabels):
@@ -3669,14 +3809,16 @@ def removeConfigChannels(rhn, serverids, cfglabels):
     cfglabels(list/str)     - list of configuration channel labels
     """
     if not isinstance(serverids, list):
-        serverids = [ serverids ]
+        serverids = [serverids]
     if not isinstance(cfglabels, list):
-        cfglabels = [ cfglabels ]
+        cfglabels = [cfglabels]
     try:
         return rhn.session.system.config.removeChannels(rhn.key, serverids, cfglabels) == 1
-    except Exception, E:
-        return rhn.fail(E, 'remove config channels [%s] from servers [%s]' %( ','.join(cfglabels),
-            ','.join([ getName(rhn, sid) for sid in serverids ])))
+    except Exception as E:
+        return rhn.fail(E, 'remove config channels [%s] from servers [%s]' % (','.join(cfglabels),
+                                                                              ','.join([getName(rhn, sid) for sid in
+                                                                                        serverids])))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3701,14 +3843,16 @@ def setConfigChannels(rhn, serverids, cfglabels):
     cfglabels(list/str)     - list of config channel labels
     """
     if not isinstance(serverids, list):
-        serverids = [ serverids ]
+        serverids = [serverids]
     if not isinstance(cfglabels, list):
-        cfglabels = [ cfglabels ]
+        cfglabels = [cfglabels]
     try:
         return rhn.session.system.config.setChannels(rhn.key, serverids, cfglabels) == 1
-    except Exception, E:
-        return rhn.fail(E, 'set config channels [%s] for servers [%s]' %( ','.join(cfglabels),
-            ','.join([ getName(rhn, sid) for sid in serverids ])))
+    except Exception as E:
+        return rhn.fail(E, 'set config channels [%s] for servers [%s]' % (','.join(cfglabels),
+                                                                          ','.join([getName(rhn, sid) for sid in
+                                                                                    serverids])))
+
 
 # ----------------------- system.custominfo namespace ------------------------ #
 
@@ -3733,8 +3877,9 @@ def createCustomInfoKey(rhn, label, description):
     """
     try:
         return rhn.session.system.custominfo.createKey(rhn.key, label, description) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create new custom info key %s' % label)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3759,9 +3904,10 @@ def deleteCustomInfoKey(rhn, label):
     """
     try:
         return rhn.session.system.custominfo.deleteKey(rhn.key, label) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete custom info key %s' % label)
-    
+
+
 def listAllCustomInfoKeys(rhn):
     """
     API:
@@ -3781,8 +3927,9 @@ def listAllCustomInfoKeys(rhn):
     """
     try:
         return rhn.session.system.custominfo.listAllKeys(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list all custom system information keys')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3804,11 +3951,12 @@ def updateCustomInfoKey(rhn, label, description):
     """
     try:
         return rhn.session.system.custominfo.updateKey(rhn.key, label, description) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'update description of custom info key "%s"' % label)
 
+
 # ---------------------------------------------------------------------------- #
-    
+
 # ------------------ system.provisioning.snapshot namespace ------------------ #
 
 def addTagToSnapshot(rhn, snapid, tagname):
@@ -3832,8 +3980,9 @@ def addTagToSnapshot(rhn, snapid, tagname):
     """
     try:
         return rhn.session.system.provisioning.snapshot.addTagToSnapshot(rhn.key, snapid, tagname) == 1
-    except Exception, E:
-        return rhn.fail(E,'add tag %s to snapshot ID %d' %(tagname, snapid))
+    except Exception as E:
+        return rhn.fail(E, 'add tag %s to snapshot ID %d' % (tagname, snapid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3856,9 +4005,10 @@ def deleteSnapshot(rhn, snapid):
     snapid(int)             - label for the new key
     """
     try:
-        return rhn.session.system.provisioning.snapshot.deleteSnapshot(rhn.key. snapid) == 1
-    except Exception, E:
+        return rhn.session.system.provisioning.snapshot.deleteSnapshot(rhn.key.snapid) == 1
+    except Exception as E:
         return rhn.fail(E, 'delete snapshot ID %d' % snapid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3890,15 +4040,16 @@ def deleteSystemSnapshots(rhn, serverid, **kwargs):
     iso8601 format is %Y%m%dT%H:%M:%S e.g. 20110506T11:12:13
     """
     # let's encode our date strings appropriately for XMLRPC
-    if kwargs.has_key('startDate'):
+    if 'startDate' in kwargs:
         kwargs['startDate'] = rhn.encodeDate(kwargs['startDate'])
-    if kwargs.has_key('endDate'):
+    if 'endDate' in kwargs:
         kwargs['endDate'] = rhn.encodeDate(kwargs['endDate'])
 
     try:
         return rhn.session.system.provisioning.snapshot.deleteSnapshots(rhn.key, serverid, kwargs) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete snapshots for system %s' % getName(rhn, serverid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3925,18 +4076,19 @@ def deleteSnapshots(rhn, **kwargs):
     *endDate(str)            - iso8601 format date string
     """
     # let's encode our date strings appropriately for XMLRPC
-    if kwargs.has_key('startDate'):
+    if 'startDate' in kwargs:
         kwargs['startDate'] = rhn.encodeDate(kwargs['startDate'])
-    if kwargs.has_key('endDate'):
+    if 'endDate' in kwargs:
         kwargs['endDate'] = rhn.encodeDate(kwargs['endDate'])
     try:
         return rhn.session.system.provisioning.snapshot.deleteSnapshots(rhn.key, kwargs) == 1
-    except Exception, E:
-        return rhn.fail(E,  'delete system snapshots')
+    except Exception as E:
+        return rhn.fail(E, 'delete system snapshots')
+
 
 # ---------------------------------------------------------------------------- #
-    
-def listSnapshotConfigFiles(rhn, snapid):    
+
+def listSnapshotConfigFiles(rhn, snapid):
     """
     API:
     system.provisioning.snapshot.listSnapshotConfigFiles
@@ -3956,8 +4108,9 @@ def listSnapshotConfigFiles(rhn, snapid):
     """
     try:
         return rhn.session.system.provisioning.snapshot.listSnapshotConfigFiles(rhn.key, snapid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list config files for snapshot ID %d' % snapid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -3981,8 +4134,9 @@ def listSnapshotPackages(rhn, snapid):
     """
     try:
         return rhn.session.system.provisioning.snapshot.listSnapshotPackages(rhn.key, snapid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list packages associated with snapshot ID %d' % snapid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -4012,14 +4166,15 @@ def listSnapshots(rhn, serverid, **kwargs):
     """
     # let's encode our date strings appropriately for XMLRPC
     dates = {}
-    if kwargs.has_key('startDate'):
+    if 'startDate' in kwargs:
         dates['startDate'] = rhn.encodeDate(kwargs['startDate'])
-    if kwargs.has_key('endDate'):
+    if 'endDate' in kwargs:
         dates['endDate'] = rhn.encodeDate(kwargs['endDate'])
     try:
         return rhn.session.system.provisioning.snapshot.listSnapshots(rhn.key, serverid, dates) == 1
-    except Exception, E:
-        return rhn.fail(E,  'list system snapshots for server %s' % getName(rhn, serverid))
+    except Exception as E:
+        return rhn.fail(E, 'list system snapshots for server %s' % getName(rhn, serverid))
+
 
 # ------------------------- system.search namespace -------------------------- #
 
@@ -4044,8 +4199,9 @@ def searchDeviceDescription(rhn, query):
     """
     try:
         return rhn.session.system.search.deviceDescription(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for systems matching device description "%s"' % query)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -4070,8 +4226,9 @@ def searchDeviceDriver(rhn, query):
     """
     try:
         return rhn.session.system.search.deviceDriver(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for systems matching device driver "%s"' % query)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -4096,8 +4253,9 @@ def searchDeviceId(rhn, query):
     """
     try:
         return rhn.session.system.search.deviceId(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for systems matching device Id "%s"' % query)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -4122,8 +4280,9 @@ def searchDeviceVendorId(rhn, query):
     """
     try:
         return rhn.session.system.search.deviceVendorId(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for systems matching device VendorId "%s"' % query)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -4148,11 +4307,12 @@ def searchHostname(rhn, query):
     """
     try:
         return rhn.session.system.search.hostname(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for systems matching device driver "%s"' % query)
 
+
 # ---------------------------------------------------------------------------- #
-        
+
 def searchIp(rhn, query):
     """
     API:
@@ -4174,8 +4334,9 @@ def searchIp(rhn, query):
     """
     try:
         return rhn.session.system.search.ip(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for systems matching IP Address "%s"' % query)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -4200,8 +4361,8 @@ def searchNameAndDescription(rhn, query):
     """
     try:
         return rhn.session.system.search.nameAndDescription(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for systems whose name or description match "%s"' % query)
-        
+
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:
