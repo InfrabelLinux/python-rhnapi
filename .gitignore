@@ -8,3 +8,7 @@ localtest.py
 ChangeLog
 diffs/
 python_rhnapi.egg-info/
+*.py.bak
+mock.py
+.idea
+brol*

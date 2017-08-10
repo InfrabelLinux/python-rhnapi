@@ -38,10 +38,11 @@ def getApiCallList(rhn):
     """
     try:
         return rhn.session.api.getApiCallList(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'unable to retrieve API call list')
 
-def getApiNamespaceCallList(rhn, namespace):        
+
+def getApiNamespaceCallList(rhn, namespace):
     """
     API:
     api.getApiNamespaceCallList
@@ -60,8 +61,9 @@ def getApiNamespaceCallList(rhn, namespace):
     """
     try:
         return rhn.session.api.getApiNamespaceCallList(rhn.key, namespace)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get api calls for namespace %s' % namespace)
+
 
 def getApiNamespaces(rhn):
     """
@@ -82,8 +84,9 @@ def getApiNamespaces(rhn):
     """
     try:
         return rhn.session.api.getApiNamespaces(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get api namespace list')
+
 
 def getVersion(rhn):
     """
@@ -120,7 +123,6 @@ def systemVersion(rhn):
     string
     """
     return rhn.session.api.systemVersion()
-
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

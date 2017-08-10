@@ -46,20 +46,21 @@ searchNameAndSummary -> packages.search.nameAndSummary
 """
 __author__ = "Stuart Sears"
 
+
 # ---------------------------------------------------------------------------- #
 
 def findByNvrea(rhn, pkgname, pkgver, pkgrel, pkgarch, pkgepoch=''):
-	"""
+    """
     API:
     packages.findByNvrea
 
-	usage:
+    usage:
     findByNvrea(rhn, name, version, release, arch, epoch=None)
 
     description:
-	Find details about a package by Name Version Release (and possibly epoch)
+    Find details about a package by Name Version Release (and possibly epoch)
 
-	returns:
+    returns:
     list of dict, one per matched package
         { 'name' : str ,
           'version' : str ,
@@ -72,33 +73,34 @@ def findByNvrea(rhn, pkgname, pkgver, pkgrel, pkgarch, pkgepoch=''):
           'last_modified' : xmlrpclib.DateTime,
         }
 
-	parameters:
-	rhn                     - an authenticated RHN session
-	pkgname(str)            - the package name
-	pkgver(str)             - package version
-	pkgrel(str)             - package release
-	pkgarch(str)            - package architecture
-	*pkgepoch(str)          - package epoch. optional
-	"""
-	try:
-		return rhn.session.packages.findByNvrea(rhn.key,pkgname, pkgver, pkgrel, pkgepoch, pkgarch)
-	except Exception, E:
-		return rhn.fail(E, 'find package %s-%s-%s.%s' % (pkgname, pkgver, pkgrel, pkgarch,))
+    parameters:
+    rhn                     - an authenticated RHN session
+    pkgname(str)            - the package name
+    pkgver(str)             - package version
+    pkgrel(str)             - package release
+    pkgarch(str)            - package architecture
+    *pkgepoch(str)          - package epoch. optional
+    """
+    try:
+        return rhn.session.packages.findByNvrea(rhn.key, pkgname, pkgver, pkgrel, pkgepoch, pkgarch)
+    except Exception as E:
+        return rhn.fail(E, 'find package %s-%s-%s.%s' % (pkgname, pkgver, pkgrel, pkgarch,))
+
 
 # ---------------------------------------------------------------------------- #
 
 def getDetails(rhn, pkgid):
-	"""
+    """
     API:
     packages.getDetails
 
-	usage:
+    usage:
     getDetailsByID(RHN, pkgid)
 
     description:
-	Retrieves package information based on a package ID
+    Retrieves package information based on a package ID
 
-	returns:
+    returns:
     dict
     {'arch_label': str
      'build_date': str
@@ -123,14 +125,15 @@ def getDetails(rhn, pkgid):
      'version': '4.1.2'
     }
 
-	parameters:
-	rhn                      - an authenticated RHN session
-	pkgid(int)               - Package ID number
-	"""
-	try:
-		return rhn.session.packages.getDetails(rhn.key, pkgid)
-	except Exception, E:
-		return rhn.fail(E, 'find package with ID %d' % pkgid)
+    parameters:
+    rhn                      - an authenticated RHN session
+    pkgid(int)               - Package ID number
+    """
+    try:
+        return rhn.session.packages.getDetails(rhn.key, pkgid)
+    except Exception as E:
+        return rhn.fail(E, 'find package with ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -154,8 +157,9 @@ def getPackage(rhn, pkgid):
     """
     try:
         return rhn.session.packages.getPackage(rhn.key, pkgid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'fetch package with ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -180,80 +184,83 @@ def getPackageUrl(rhn, pkgid):
     """
     try:
         return rhn.session.packages.getPackageUrl(rhn.key, pkgid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'find download URL for package ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
 def listChangelog(rhn, pkgid):
-	"""
+    """
     API:
     packages.listChangelog
 
-	usage:
+    usage:
     listChangelog(rhn, pkgid)
 
     description:
-	Retrieves package changelog for package ID
+    Retrieves package changelog for package ID
 
-	returns:
+    returns:
     list of dicts, one per entry
             {'author': str
             'date': str
             'text': str }
 
-	parameters:
-	rhn                      - an authenticated RHN session
-	pkgid(int)               - Package ID number
-	"""
-	try:
-		return rhn.session.packages.listChangelog(rhn.key, pkgid)
-	except Exception, E:
-		return rhn.fail(E, 'get changelog for package ID %d' % pkgid)
+    parameters:
+    rhn                      - an authenticated RHN session
+    pkgid(int)               - Package ID number
+    """
+    try:
+        return rhn.session.packages.listChangelog(rhn.key, pkgid)
+    except Exception as E:
+        return rhn.fail(E, 'get changelog for package ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
 def listDependencies(rhn, pkgid):
-	"""
+    """
     API:
     packages.listDependencies
 
-	usage:
+    usage:
     listDependencies(rhn, pkgid)
 
     description:
-	Retrieves dependency info for a package ID
+    Retrieves dependency info for a package ID
 
-	returns:
+    returns:
     list of dicts, one per dependency
         {
            'dependency': (str) usually file path or package name,
            'dependency_modifier': (str),
            'dependency_type': (str) one of {'requires', 'conflicts', 'obsoletes', 'provides'],
-        }, 
-	parameters:
-	rhn                      - an authenticated RHN session
-	pkgid(int)               - Package ID number
-	"""
-	try:
-		return rhn.session.packages.listDependencies(rhn.key, pkgid)
-	except Exception, E:
-		return rhn.fail(E, 'get changelog for package ID %d' % pkgid)
+        },
+    parameters:
+    rhn                      - an authenticated RHN session
+    pkgid(int)               - Package ID number
+    """
+    try:
+        return rhn.session.packages.listDependencies(rhn.key, pkgid)
+    except Exception as E:
+        return rhn.fail(E, 'get changelog for package ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
 def listFiles(rhn, pkgid):
-	"""
+    """
     API:
     packages.listFiles
 
-	usage:
+    usage:
     listFiles(rhn, pkgid)
 
     description:
-	Retrieves file listing for package ID
+    Retrieves file listing for package ID
 
-	returns:
+    returns:
     list of dict, one per file
         { 'checksum': (str) '55e10cb00b262abf4a13e91e0bbb6040e1da2e428c9fb844430f4d0650c21ec0',
           'checksum_type': (str) 'sha256',
@@ -264,94 +271,98 @@ def listFiles(rhn, pkgid):
           'type': (str) 'file'
         },
 
-	parameters:
-	rhn                      - an authenticated RHN session
-	pkgid(int)               - Package ID number
-	"""
-	try:
-		return rhn.session.packages.listFiles(rhn.key, pkgid)
-	except Exception, E:
-		return rhn.fail(E, 'get file list for package ID %d' % pkgid)
+    parameters:
+    rhn                      - an authenticated RHN session
+    pkgid(int)               - Package ID number
+    """
+    try:
+        return rhn.session.packages.listFiles(rhn.key, pkgid)
+    except Exception as E:
+        return rhn.fail(E, 'get file list for package ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
 def listProvidingChannels(rhn, pkgid):
-	"""
+    """
     API:
     packages.listProvidingChannels
 
-	usage:
+    usage:
     listProvidingChannels(rhn, pkgid)
 
     description:
-	Lists channels providing a package ID
+    Lists channels providing a package ID
 
-	returns:
+    returns:
     list of dicts, one per channel
-        { 
+        {
           'label': 'rhel-x86_64-server-6',
           'name': 'Red Hat Enterprise Linux Server (v. 6 for 64-bit x86_64)',
           'parent_label': ' '
         }
 
-	parameters:
-	rhn                      - an authenticated RHN session
-	pkgid(int)               - Package ID number
-	"""
-	try:
-		return rhn.session.packages.listProvidingChannels(rhn.key, pkgid)
-	except Exception, E:
-		return rhn.fail(E, 'get channel list for package ID %d' % pkgid)
+    parameters:
+    rhn                      - an authenticated RHN session
+    pkgid(int)               - Package ID number
+    """
+    try:
+        return rhn.session.packages.listProvidingChannels(rhn.key, pkgid)
+    except Exception as E:
+        return rhn.fail(E, 'get channel list for package ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
 def listProvidingErrata(rhn, pkgid):
-	"""
+    """
     API:
     packages.listProvidingErrata
 
-	usage:
+    usage:
     listProvidingErrata(rhn, pkgid)
 
     description:
-	Displays which Errata provide a given package.
+    Displays which Errata provide a given package.
 
-	returns:
+    returns:
     list of dicts, one per entry
 
-	parameters:
-	rhn                      - an authenticated RHN session
-	pkgid(int)               - Package ID number
-	"""
-	try:
-		return rhn.session.packages.listProvidingErrata(rhn.key, pkgid)
-	except Exception, E:
-		return rhn.fail(E, 'find errata providing package ID %d' % pkgid)
+    parameters:
+    rhn                      - an authenticated RHN session
+    pkgid(int)               - Package ID number
+    """
+    try:
+        return rhn.session.packages.listProvidingErrata(rhn.key, pkgid)
+    except Exception as E:
+        return rhn.fail(E, 'find errata providing package ID %d' % pkgid)
+
 
 # ---------------------------------------------------------------------------- #
 
 def removePackage(rhn, pkgid):
-	"""
+    """
     API:
     packages.removePackage
 
-	usage:
+    usage:
     removePackage(rhn, pkgid)
 
     description:
-	Removes a package from the satellite completely, from ALL channels.
+    Removes a package from the satellite completely, from ALL channels.
 
-	returns:
+    returns:
     bool, or throws exception
 
-	parameters:
-	rhn                      - an authenticated RHN session
-	pkgid(int)               - Package ID number
-	"""
-	try:
-		return rhn.session.packages.removePackage(rhn.key, pkgid) == 1
-	except Exception, E:
-		return rhn.fail(E, 'remove Package ID %d' % pkgid)
+    parameters:
+    rhn                      - an authenticated RHN session
+    pkgid(int)               - Package ID number
+    """
+    try:
+        return rhn.session.packages.removePackage(rhn.key, pkgid) == 1
+    except Exception as E:
+        return rhn.fail(E, 'remove Package ID %d' % pkgid)
+
 
 # ----------------------------- package.provider ----------------------------- #
 
@@ -378,12 +389,13 @@ def associateKey(rhn, provider, key='', keytype='gpg'):
     """
     try:
         return rhn.session.packages.provider.associateKey(rhn.key, provider, key, keytype) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'associate new key with package provider %s' % provider)
+
 
 # ---------------------------------------------------------------------------- #
 
-def listProviders(rhn):        
+def listProviders(rhn):
     """
     API:
     packages.provider.list
@@ -411,8 +423,9 @@ def listProviders(rhn):
     """
     try:
         return rhn.session.packages.provider.list(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list all package providers')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -441,8 +454,9 @@ def listKeys(rhn, provider):
     """
     try:
         return rhn.session.packages.provider.listKeys(rhn.key, provider)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get list of package security keys for provider %s' % provider)
+
 
 # ----------------------------- packages.search ------------------------------ #
 
@@ -471,14 +485,16 @@ def search(rhn, query):
     """
     try:
         return rhn.session.packages.search.advanced(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for packages using query "%s"' % query)
+
 
 def searchAdvanced(rhn, query):
     """
     wrapper around search to look more like the API :)
     """
     return search(rhn, query)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -505,8 +521,9 @@ def searchActivationKey(rhn, query, actkey):
     """
     try:
         return rhn.session.packages.search.advancedWithActKey(rhn.key, query, actkey)
-    except Exception, E:
-        return rhn.fail(E, 'find packages in activation key "%s" using query "%s"' %(actkey, query))
+    except Exception as E:
+        return rhn.fail(E, 'find packages in activation key "%s" using query "%s"' % (actkey, query))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -516,9 +533,10 @@ def searchAdvancedWithActivationKey(rhn, query, actkey):
     """
     return searchActivationKey(rhn, query, actkey)
 
+
 # ---------------------------------------------------------------------------- #
 
-def searchChannel(rhn, query, chanlabel):        
+def searchChannel(rhn, query, chanlabel):
     """
     API:
     packages.search.advancedWithChannel
@@ -541,8 +559,9 @@ def searchChannel(rhn, query, chanlabel):
     """
     try:
         return rhn.session.packages.search.advancedWithChannel(rhn.key, query, chanlabel)
-    except Exception, E:
-        return rhn.fail(E, 'search for packages in channel "%s" using query "%s"' %(chanlabel, query))
+    except Exception as E:
+        return rhn.fail(E, 'search for packages in channel "%s" using query "%s"' % (chanlabel, query))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -551,6 +570,7 @@ def searchAdvancedWithChannel(rhn, query, chanlabel):
     wrapper around searchChannel
     """
     return searchChannel(rhn, query, chanlabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -575,8 +595,9 @@ def searchName(rhn, pkgname):
     """
     try:
         return rhn.session.packages.search.name(rhn.key, pkgname)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search for packages matching name "%s"' % pkgname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -601,8 +622,9 @@ def searchNameAndDescription(rhn, query):
     """
     try:
         return rhn.session.packages.search.nameAndDescription(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search packages names and descriptions using query "%s"' % query)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -627,8 +649,8 @@ def searchNameAndSummary(rhn, query):
     """
     try:
         return rhn.session.packages.search.nameAndSummary(rhn.key, query)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'search packages names and summaries using query "%s"' % query)
-        
+
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

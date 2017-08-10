@@ -42,8 +42,9 @@ def channelExists(rhn, chanlabel):
     """
     try:
         return rhn.session.configchannel.channelExists(rhn.key, chanlabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'Check for existence of config channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -51,7 +52,8 @@ def createConfigChannel(rhn, chanlabel, channame, chandesc):
     """
     wrapper around createConfigChannel for backwards compatibility with older scripts
     """
-    return  create(rhn, chanlabel, channame, chandesc)
+    return create(rhn, chanlabel, channame, chandesc)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -77,8 +79,9 @@ def create(rhn, chanlabel, channame, chandesc):
     """
     try:
         return rhn.session.configchannel.create(rhn.key, chanlabel, channame, chandesc)
-    except Exception, E:
-        return rhn.fail(E, 'create new configuration channel %s' %(chanlabel))
+    except Exception as E:
+        return rhn.fail(E, 'create new configuration channel %s' % (chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -87,6 +90,7 @@ def deleteConfigChannels(rhn, chanlist):
     alias for deleteChannels (script compat)
     """
     return deleteChannels(rhn, chanlist)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -110,8 +114,9 @@ def deleteChannels(rhn, chanlist):
     """
     try:
         return rhn.session.configchannel.deleteChannels(rhn.key, chanlist) == 1
-    except Exception, E:
-        return rhn.fail(E, 'delete configuration channels %s' %(','.join(chanlist) ) )
+    except Exception as E:
+        return rhn.fail(E, 'delete configuration channels %s' % (','.join(chanlist)))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -129,6 +134,7 @@ def deleteConfigChannel(rhn, chanlabel):
     chanlabel(str)          - channel label
     """
     return deleteConfigChannels(rhn, [chanlabel])
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -151,10 +157,11 @@ def delete(rhn, chanspec):
     chanspec(list of str)   - list of channel labels
     """
     if isinstance(chanspec, str):
-        chanlist = [ chanspec ]
+        chanlist = [chanspec]
     elif isinstance(chanspec, list):
         chanlist = chanspec
-    return deleteChannels(rhn, chanlist)       
+    return deleteChannels(rhn, chanlist)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -179,20 +186,21 @@ def update(rhn, chanlabel, channame, chandesc):
     chandesc(str)           - channel label to merge into
     """
     try:
-        return rhn.session.configchannel.update(rhn.key, chanlabel, channame, chandesc) 
-    except Exception, E:
-        return rhn.fail(E, 'update configuration channel %s' %(chanlabel))
+        return rhn.session.configchannel.update(rhn.key, chanlabel, channame, chandesc)
+    except Exception as E:
+        return rhn.fail(E, 'update configuration channel %s' % (chanlabel))
+
 
 def updateConfigChannel(rhn, chanlabel, channame, chandesc):
     """
     wrapper around configchannel.update for backwards compat with scripts.
     """
     return update(rhn, chanlabel, channame, chandesc)
-    
+
 
 # --------------------------------------------------------------------------------- #
 
-def detailsByID(rhn,  chanid):
+def detailsByID(rhn, chanid):
     """
     usage: detailsByID(rhn,  chanid)
 
@@ -203,9 +211,10 @@ def detailsByID(rhn,  chanid):
      chanid(int)            - channel ID number
     """
     try:
-        return rhn.session.configchannel.getDetails(rhn.key,  chanid)
-    except Exception, E:
-        return rhn.fail(E, 'get info for configuration channel %d' %( chanid) )
+        return rhn.session.configchannel.getDetails(rhn.key, chanid)
+    except Exception as E:
+        return rhn.fail(E, 'get info for configuration channel %d' % (chanid))
+
 
 def getDetails(rhn, chanspec):
     """
@@ -227,8 +236,9 @@ def getDetails(rhn, chanspec):
     """
     try:
         return rhn.session.configchannel.getDetails(rhn.key, chanspec)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get details for channel %r' % chanspec)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -244,8 +254,9 @@ def detailsByLabel(rhn, chanlabel):
     """
     try:
         return rhn.session.configchannel.getDetails(rhn.key, chanlabel)
-    except Exception, E:
-        return rhn.fail(E, 'get info for configuration channel %s' %(chanlabel) )
+    except Exception as E:
+        return rhn.fail(E, 'get info for configuration channel %s' % (chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -282,9 +293,11 @@ def createOrUpdatePath(rhn, chanlabel, path, directory=False, **kwargs):
     * revision(int)         - revison of updated file (auto-incremented)
     """
     try:
-        return isinstance(rhn.session.configchannel.createOrUpdatePath(rhn.key, chanlabel, path, directory, kwargs), dict)
-    except Exception, E:
-        return rhn.fail(E, 'create or update path %s in channel %s with structure %s' %(path, chanlabel, str(kwargs)))
+        return isinstance(rhn.session.configchannel.createOrUpdatePath(rhn.key, chanlabel, path, directory, kwargs),
+                          dict)
+    except Exception as E:
+        return rhn.fail(E, 'create or update path %s in channel %s with structure %s' % (path, chanlabel, str(kwargs)))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -320,33 +333,33 @@ def createOrUpdateObject(rhn, chanlabel, objinfo):
     * int "revision"        - next revision number, auto increment for null
     """
     # strip out the stuff that we can't use
-    for key in  [  'binary', 'channel', 'modified', 'md5', 'permissions_mode', 'creation' ]:
-        if objinfo.has_key(key):
+    for key in ['binary', 'channel', 'modified', 'md5', 'permissions_mode', 'creation']:
+        if key in objinfo:
             del objinfo[key]
 
     # returns int, but expects string. Seriously?
     if objinfo.get('permissions') is not None:
         objinfo['permissions'] = str(objinfo['permissions'])
-    
-    if objinfo.has_key('path'):
+
+    if 'path' in objinfo:
         path = objinfo['path']
         del objinfo['path']
-    
+
     if objinfo.get('type') == 'symlink':
         del objinfo['type']
         try:
             return rhn.session.configchannel.createOrUpdateSymlink(rhn.key, chanlabel, path, objinfo)
-        except Exception, E:
+        except Exception as E:
             return rhn.fail(E, 'create/update symbolic link %s' % path)
     else:
         ftype = objinfo.get('type', 'file')
         del objinfo['type']
         isDir = ftype == 'directory'
-        
+
         try:
             return rhn.session.configchannel.createOrUpdatePath(rhn.key, chanlabel, path, isDir, objinfo)
-        except Exception, E:
-            return rhn.fail(E, 'create/update %s %s' %(ftype ,path))
+        except Exception as E:
+            return rhn.fail(E, 'create/update %s %s' % (ftype, path))
 
 
 # --------------------------------------------------------------------------------- #
@@ -375,9 +388,11 @@ def createOrUpdateSymlink(rhn, chanlabel, path, **kwargs):
     *revision(int)          - revison of updated file 
     """
     try:
-        return isinstance(rhn.session.configchannel.createOrUpdateSymlink(rhn.key, chanlabel,path, kwargs), dict)
-    except Exception, E:
-        return rhn.fail(E, 'create or update symlink %s in channel %s with parameters %s' %(path, chanlabel, str(kwargs)))
+        return isinstance(rhn.session.configchannel.createOrUpdateSymlink(rhn.key, chanlabel, path, kwargs), dict)
+    except Exception as E:
+        return rhn.fail(E,
+                        'create or update symlink %s in channel %s with parameters %s' % (path, chanlabel, str(kwargs)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -402,8 +417,9 @@ def deleteFiles(rhn, chanlabel, pathlist):
     """
     try:
         return rhn.session.configchannel.deleteFiles(rhn.key, chanlabel, pathlist) == 1
-    except Exception, E:
-        return rhn.fail(E, 'delete files from configuration channel %s' %(chanlabel))
+    except Exception as E:
+        return rhn.fail(E, 'delete files from configuration channel %s' % (chanlabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -427,6 +443,7 @@ def deleteFile(rhn, chanlabel, path):
     pathlist(list of str)   - a list of paths to delete
     """
     return deleteFiles(rhn, chanlabel, [path])
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -452,16 +469,18 @@ def lookupFileInfo(rhn, chanlabel, pathlist):
     """
     try:
         return rhn.session.configchannel.lookupFileInfo(rhn.key, chanlabel, pathlist)
-    except Exception, E:
-        return rhn.fail(E, 'find path information in %s' %(chanlabel))
-        
+    except Exception as E:
+        return rhn.fail(E, 'find path information in %s' % (chanlabel))
+
+
 # --------------------------------------------------------------------------------- #
 
-def getFileInfo(rhn, chanlabel, pathlist):       
+def getFileInfo(rhn, chanlabel, pathlist):
     """
     special case of lookupFileInfo for the sake of commonsense naming.
     """
     return lookupFileInfo(rhn, chanlabel, pathlist)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -470,6 +489,7 @@ def getPathInfo(rhn, chanlabel, pathlist):
     alias for lookupFileInfo for backwards compat with scripts.
     """
     return lookupFileInfo(rhn, chanlabel, pathlist)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -492,16 +512,18 @@ def lookupChannelInfo(rhn, chanlist):
     chanlist(list/str)      - list of channel labels
     """
     if not isinstance(chanlist, list):
-        chanlist = [ chanlist ]
+        chanlist = [chanlist]
     try:
         return rhn.session.configchannel.lookupChannelInfo(rhn.key, chanlist)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'look up channel information')
+
 
 # --------------------------------------------------------------------------------- #
 
 def getChannelInfo(rhn, chanlist):
     return lookupChannelInfo(rhn, chanlist)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -524,13 +546,15 @@ def listGlobals(rhn):
     """
     try:
         return rhn.session.configchannel.listGlobals(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list global configuration channels')
+
 
 # --------------------------------------------------------------------------------- #
 
 def listGlobalChannels(rhn):
     return listGlobals(rhn)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -554,7 +578,7 @@ def listFiles(rhn, chanlabel):
     """
     try:
         return rhn.session.configchannel.listFiles(rhn.key, chanlabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get file list for channel %s' % chanlabel)
 
 # footer - do not edit below here

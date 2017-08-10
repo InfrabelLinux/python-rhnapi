@@ -31,6 +31,7 @@ for creation and deletion of organizations) Satellite Admin privileges.
 
 __author__ = "Stuart Sears"
 
+
 # org
 #    * create
 #    * delete
@@ -54,7 +55,7 @@ __author__ = "Stuart Sears"
 
 # ----------------------------------- org  ----------------------------------- #
 def create(rhn, orgname, admlogin, admpass, admprefix, admfirst,
-     admlast, admemail, pamauth = False):
+           admlast, admemail, pamauth=False):
     """
     API:
     org.create
@@ -84,9 +85,10 @@ def create(rhn, orgname, admlogin, admpass, admprefix, admfirst,
     """
     try:
         return rhn.session.org.create(rhn.key, orgname, admlogin, admpass, admprefix,
-                    admfirst, admlast, admemail, pamauth)
-    except Exception, E:
-        return rhn.fail(E, 'create organization %s with admin login %s' %(orgname, admlogin))
+                                      admfirst, admlast, admemail, pamauth)
+    except Exception as E:
+        return rhn.fail(E, 'create organization %s with admin login %s' % (orgname, admlogin))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -111,8 +113,9 @@ def delete(rhn, orgid):
     """
     try:
         return rhn.session.org.delete(rhn.key, orgid) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete Org ID %d' % orgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -137,8 +140,9 @@ def getDetails(rhn, orgspec):
     """
     try:
         return rhn.session.org.getDetails(rhn.key, orgspec)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get information about org %s' % str(orgspec))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -162,13 +166,13 @@ def listOrgs(rhn):
     """
     try:
         return rhn.session.org.listOrgs(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list organizations on the satellite %s' % rhn.hostname)
 
 
 # show usage of software entitlements across all your orgs
 
-def listSoftwareEntitlements(rhn, entlabel = None, unentitled = False):
+def listSoftwareEntitlements(rhn, entlabel=None, unentitled=False):
     """
     usage: listSoftwareEntitlements(rhn)
 
@@ -192,10 +196,11 @@ def listSoftwareEntitlements(rhn, entlabel = None, unentitled = False):
         else:
             res = rhn.session.org.listEntitlements(rhn.key)
         return res
-    except Exception, E:
+    except Exception as E:
         if entlabel is not None:
             return rhn.fail(E, 'List usage of entitlement %s across all orgs' % entlabel)
         return rhn.fail(E, 'List software entitlement usage across all orgs')
+
 
 # show usage of a specific softw
 def ListSoftwareEntitlementsForOrg(rhn, orgid):
@@ -213,10 +218,11 @@ def ListSoftwareEntitlementsForOrg(rhn, orgid):
     """
     try:
         return rhn.session.org.ListSoftwareEntitlementsForOrg(rhn.key, orgid)
-    except Exception, E:
-        return rhn.fail(E, 'List software entitlements for org %(id)d (%(name)s)' % getDetails(rhn, orgid) )
+    except Exception as E:
+        return rhn.fail(E, 'List software entitlements for org %(id)d (%(name)s)' % getDetails(rhn, orgid))
 
-def ListSystemEntitlements(rhn, label = None, unentitled = False):
+
+def ListSystemEntitlements(rhn, label=None, unentitled=False):
     """
     usage: ListSystemEntitlements(rhn, label, includeUnentitled)
 
@@ -237,10 +243,11 @@ def ListSystemEntitlements(rhn, label = None, unentitled = False):
             return rhn.session.org.ListSystemEntitlements(rhn.key, label, unentitled)
         else:
             return rhn.session.org.ListSystemEntitlements(rhn.key)
-    except Exception, E:
+    except Exception as E:
         if label is not None:
             return rhn.fail(E, 'list usage of systemn entitlement %s across orgs' % label)
         return rhn.fail(E, 'list usage of all system entitlements across orgs')
+
 
 def ListSystemEntitlementsForOrg(rhn, orgid):
     """
@@ -256,8 +263,9 @@ def ListSystemEntitlementsForOrg(rhn, orgid):
     """
     try:
         return rhn.session.org.ListSystemEntitlementsForOrg(rhn.key, orgid)
-    except Exception, E:
-        return rhn.fail(E, 'list system entitlement usage for org %(id)d (%(name)s)' % getDetails(rhn, orgid) )
+    except Exception as E:
+        return rhn.fail(E, 'list system entitlement usage for org %(id)d (%(name)s)' % getDetails(rhn, orgid))
+
 
 def listUsers(rhn, orgid):
     """
@@ -273,8 +281,9 @@ def listUsers(rhn, orgid):
     """
     try:
         return rhn.session.org.listUsers(rhn.key, orgid)
-    except Exception, E:
-        return rhn.fail(E, 'list users in org %(id)d (%(name)s)' % getDetails(rhn, orgid) )
+    except Exception as E:
+        return rhn.fail(E, 'list users in org %(id)d (%(name)s)' % getDetails(rhn, orgid))
+
 
 def migrateSystems(rhn, dest_orgid, systemlist):
     """
@@ -297,7 +306,7 @@ def migrateSystems(rhn, dest_orgid, systemlist):
     """
     try:
         return rhn.session.org.migrateSystems(rhn.key, dest_orgid, systemlist)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'Migrate systems to org %d' % dest_orgid)
 
 
@@ -321,9 +330,9 @@ def setSoftwareEntitlements(rhn, orgid, label, allocation):
     """
     try:
         return rhn.session.org.setSoftwareEntitlements(rhn.key, orgid, label, allocation) == 1
-    except Exception, E:
+    except Exception as E:
         orginfo = "%(id)d (%(name)s)" % getDetails(rhn, orgid)
-        return rhn.fail(E, 'allocate %d entitlements for %s to org %s' %(allocation, label, orginfo) )
+        return rhn.fail(E, 'allocate %d entitlements for %s to org %s' % (allocation, label, orginfo))
 
 
 def setSoftwareFlexEntitlements(rhn, orgid, label, allocation):
@@ -346,9 +355,10 @@ def setSoftwareFlexEntitlements(rhn, orgid, label, allocation):
     """
     try:
         return rhn.session.org.setSoftwareFlexEntitlements(rhn.key, orgid, label, allocation) == 1
-    except Exception, E:
+    except Exception as E:
         orginfo = "%(id)d (%(name)s)" % getDetails(rhn, orgid)
-        return rhn.fail(E, 'allocate %d flex entitlements for %s to org %s' %(allocation, label, orginfo))
+        return rhn.fail(E, 'allocate %d flex entitlements for %s to org %s' % (allocation, label, orginfo))
+
 
 def setSystemEntitlements(rhn, orgid, label, allocation):
     """
@@ -375,9 +385,10 @@ def setSystemEntitlements(rhn, orgid, label, allocation):
     """
     try:
         return rhn.session.org.setSystemEntitlements(rhn.key, orgid, label, allocation) == 1
-    except Exception, E:
+    except Exception as E:
         orginfo = "%(id)d (%(name)s)" % getDetails(rhn, orgid)
-        return rhn.fail(E, 'allocate %d %s entitlements to org %s' %(allocation, label, orginfo) )
+        return rhn.fail(E, 'allocate %d %s entitlements to org %s' % (allocation, label, orginfo))
+
 
 def updateName(rhn, orgid, newname):
     """
@@ -393,8 +404,9 @@ def updateName(rhn, orgid, newname):
     """
     try:
         return rhn.session.org.updateName(rhn.key, orgid, newname)
-    except Exception, E:
-        return rhn.fail(E, 'change name for organization %(id)d (%(name)s)' % getDetails(rhn, orgid) )
+    except Exception as E:
+        return rhn.fail(E, 'change name for organization %(id)d (%(name)s)' % getDetails(rhn, orgid))
+
 
 # -------------------------------- org.trusts -------------------------------- #
 
@@ -419,8 +431,9 @@ def addTrust(rhn, orgid, trustorgid):
     """
     try:
         return rhn.session.org.trusts.addTrust(rhn.key, orgid, trustorgid) == 1
-    except Exception, E:
-        return rhn.fail(E, 'add a new trust for org %d to org %d' %(trustorgid, orgid))
+    except Exception as E:
+        return rhn.fail(E, 'add a new trust for org %d to org %d' % (trustorgid, orgid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -444,8 +457,9 @@ def getTrustDetails(rhn, trustorgid):
     """
     try:
         return rhn.session.org.trusts.getDetails(rhn.key, trustorgid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get details about trusted org %d' % trustorgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -470,8 +484,9 @@ def listChannelsConsumed(rhn, trustorgid):
     """
     try:
         return rhn.session.org.trusts.listChannelsConsumed(rhn.key, trustorgid)
-    except Exception, E:
-        return rhn.fail(E, 'list channels consumed by org %d' % trustorgid )
+    except Exception as E:
+        return rhn.fail(E, 'list channels consumed by org %d' % trustorgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -496,8 +511,9 @@ def listChannelsProvided(rhn, trustorgid):
     """
     try:
         return rhn.session.org.trusts.listChannelsProvided(rhn.key, trustorgid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list channels provided to your org by org %d' % trustorgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -520,8 +536,9 @@ def listTrustedOrgs(rhn):
     """
     try:
         return rhn.session.org.trusts.listOrgs(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list orgs trusted by your organization')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -548,8 +565,9 @@ def listSystemsAffected(rhn, orgid, trustedorgid):
     """
     try:
         return rhn.session.org.trusts.listSystemsAffected(rhn.key, orgid, trustedorgid)
-    except Exception, E:
-        return rhn.fail(E, 'list systems affected by removing the trust between orgs %d and %d' %(orgid, trustedorgid))
+    except Exception as E:
+        return rhn.fail(E, 'list systems affected by removing the trust between orgs %d and %d' % (orgid, trustedorgid))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -575,8 +593,9 @@ def listTrusts(rhn, orgid):
     """
     try:
         return rhn.session.org.trusts.listTrusts(rhn.key, orgid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list orgs trusted by org id %d' % orgid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -603,8 +622,8 @@ def removeTrust(rhn, orgid, trustedorgid):
     """
     try:
         return rhn.session.org.trusts.removeTrust(rhn.key, orgid, trustedorgid) == 1
-    except Exception, E:
-        return rhn.fail(E, 'remove the trust between org %d and %d' %(orgid, trustedorgid))
+    except Exception as E:
+        return rhn.fail(E, 'remove the trust between org %d and %d' % (orgid, trustedorgid))
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:
