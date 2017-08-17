@@ -382,7 +382,7 @@ class rhnSession(object):
         # 2. login and password from config file
         # 3. prompt for missing information
         # If login and/or password are specified explicitly they override the config file
-        if self.login == None and self._password == None and self.configfile != None:
+        if not self.login and not self._password and self.configfile:
             self.logInfo("looking up config info in %s" % self.configfile)
             self.login, self._password = fetchCreds(self.configfile, self.hostname, self.logger, self.debug)
 
@@ -393,9 +393,9 @@ class rhnSession(object):
         if str(self._password) == 'None':
             self._password = promptPass(self.login)
 
-        ssl_context = ssl.SSLContext()
+        ssl_context = ssl.create_default_context()
         if not ssl_verify:
-            ssl_context.verify_mode = ssl.CERT_OPTIONAL
+            ssl_context.verify_mode = ssl.CERT_NONE
 
         try:
             if proxyserver is not None:
