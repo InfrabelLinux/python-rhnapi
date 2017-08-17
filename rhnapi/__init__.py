@@ -395,6 +395,7 @@ class rhnSession(object):
 
         ssl_context = ssl.create_default_context()
         if not ssl_verify:
+            ssl_context.check_hostname = False
             ssl_context.verify_mode = ssl.CERT_NONE
 
         try:
