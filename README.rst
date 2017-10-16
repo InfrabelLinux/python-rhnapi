@@ -80,7 +80,7 @@ Usage
 
 How to use the module in your own scripts.
 
-#. Make sure it is on your PYTHONPATH.
+1. Make sure it is on your PYTHONPATH.
    This can be accomplished in one of 2 ways:
 
    i. Build the module into am RPM package (see *Building RPMS* above) and install that, which should put everything into the right place for you.
@@ -99,14 +99,13 @@ or ::
 
   export PYTHONPATH=/usr/local/lib/python/site-packages
 
-
-#. Before you can do anything, you'll need to import the module
+2. Before you can do anything, you'll need to import the module
 
 ::
 
   import rhnapi
 
-#. To ease typing, the module supports the use of a config file in .ini format, defaulting to '~/.rhninfo'.
+3. To ease typing, the module supports the use of a config file in .ini format, defaulting to '~/.rhninfo'.
 This should look like the example below (you can include sections for different satellites if you wish. Each [] section should contain only one hostname.
 No regexes, URLS, protocols or any other funny business are supported. Just hostnames. Although I may add some of that in the end, if I get around to it. (Who *really* has so many satellite/spacewalk servers that they can't handle one section each?)
 
@@ -144,3 +143,8 @@ Should do what it says on the tin.
 
 
 Happy Scripting
+
+Authors
+-------
+* Stuart Sears
+* Pieter De Praetere (porting to Python 3)

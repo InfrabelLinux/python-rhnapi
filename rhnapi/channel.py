@@ -46,18 +46,20 @@ from operator import itemgetter
 
 # --------------------------------------------------------------------------------- #
 
-arch_labels = { 'ia32' : 'channel-ia32',
-                'ia64': 'channel-ia64',
-                'ppc' : 'channel-ppc',
-                'sparc' : 'channel-sparc',
-                'sparc-solaris': 'channel-sparc-sun-solaris',
-                'i386-solaris' : 'channel-i386-sun-solaris',
-                'iSeries' : 'channel-iseries',
-                'pSeries' : 'channel-pSeries',
-                'x86_64' : 'channel-x86_64',
-                's390' : 'channel-s390',
-                's390x' : 'channel-s390x',
-                }
+arch_labels = {'ia32': 'channel-ia32',
+               'ia64': 'channel-ia64',
+               'ppc': 'channel-ppc',
+               'sparc': 'channel-sparc',
+               'sparc-solaris': 'channel-sparc-sun-solaris',
+               'i386-solaris': 'channel-i386-sun-solaris',
+               'iSeries': 'channel-iseries',
+               'pSeries': 'channel-pSeries',
+               'x86_64': 'channel-x86_64',
+               's390': 'channel-s390',
+               's390x': 'channel-s390x',
+               }
+
+
 # The channel namespace
 #    * listAllChannels
 #    * listMyChannels
@@ -87,8 +89,9 @@ def listSoftwareChannels(rhn):
     """
     try:
         return rhn.session.channel.listSoftwareChannels(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list visible software channels')
+    except Exception as E:
+        return rhn.fail(E, 'list visible software channels')
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -111,8 +114,9 @@ def listAllChannels(rhn):
     """
     try:
         return rhn.session.channel.listAllChannels(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list software channels')
+    except Exception as E:
+        return rhn.fail(E, 'list software channels')
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -135,8 +139,9 @@ def listMyChannels(rhn):
     """
     try:
         return rhn.session.channel.listMyChannels(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list software channels')
+    except Exception as E:
+        return rhn.fail(E, 'list software channels')
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -157,8 +162,9 @@ def listPopularChannels(rhn, popcount):
     """
     try:
         return rhn.session.channel.listPopularChannels(rhn.key, popcount)
-    except Exception, E:
-        return rhn.fail(E,'list visible software channels with at least %d systems subscribed' % popcount)
+    except Exception as E:
+        return rhn.fail(E, 'list visible software channels with at least %d systems subscribed' % popcount)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -181,8 +187,9 @@ def listRedHatChannels(rhn):
     """
     try:
         return rhn.session.channel.listRedHatChannels(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list visible Red Hat software channels')
+    except Exception as E:
+        return rhn.fail(E, 'list visible Red Hat software channels')
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -205,8 +212,9 @@ def listRetiredChannels(rhn):
     """
     try:
         return rhn.session.channel.listRetiredChannels(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list retired software channels')
+    except Exception as E:
+        return rhn.fail(E, 'list retired software channels')
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -229,10 +237,11 @@ def listSharedChannels(rhn):
     """
     try:
         return rhn.session.channel.listSharedChannels(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list shared software channels')
+    except Exception as E:
+        return rhn.fail(E, 'list shared software channels')
 
-# from channel.access        
+
+# from channel.access
 #    * disableUserRestrictions
 #    * enableUserRestrictions
 #    * getOrgSharing
@@ -261,8 +270,9 @@ def disableUserRestrictions(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.access.disableUserRestrictions(rhn.key, chanlabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'disable user access restrictions for channel %s' % chanlabel)
+    except Exception as E:
+        return rhn.fail(E, 'disable user access restrictions for channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -286,10 +296,11 @@ def enableUserRestrictions(rhn, chanlabel):
     chanlabel(str)          - the channel label
     """
     try:
-        return rhn.session.channel.access.enableUserRestrictions(rhn.key, chanlabel) ==1
-    except Exception, E:
-        return rhn.fail(E,'enable user access restrictions for channel %s' % chanlabel)
-        
+        return rhn.session.channel.access.enableUserRestrictions(rhn.key, chanlabel) == 1
+    except Exception as E:
+        return rhn.fail(E, 'enable user access restrictions for channel %s' % chanlabel)
+
+
 # ---------------------------------------------------------------------------- #
 
 def getDetails(rhn, chanspec):
@@ -305,6 +316,7 @@ def getDetails(rhn, chanspec):
         return detailsByLabel(rhn, chanspec)
     else:
         return None
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -328,8 +340,9 @@ def getOrgSharing(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.access.getOrgSharing(rhn.key, chanlabel)
-    except Exception, E:
-        return rhn.fail(E,'get Org sharing info for channel %s' % chanlabel)
+    except Exception as E:
+        return rhn.fail(E, 'get Org sharing info for channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -354,8 +367,9 @@ def setOrgSharing(rhn, chanlabel, accesslevel):
     """
     try:
         return rhn.session.channel.access.setOrgSharing(rhn.key, chanlabel, accesslevel) == 1
-    except Exception, E:
-        return rhn.fail(E,'set Org sharing info for channel %s to %s' % (chanlabel, accesslevel))
+    except Exception as E:
+        return rhn.fail(E, 'set Org sharing info for channel %s to %s' % (chanlabel, accesslevel))
+
 
 # from channel.org
 #    * disableAccess
@@ -385,8 +399,9 @@ def disableAccess(rhn, chanlabel, orgid):
     """
     try:
         return rhn.session.channel.org.disableAccess(rhn.key, chanlabel, orgid) == 1
-    except Exception, E:
-        return rhn.fail(E,'disable access to channel %s for org %d' % (chanlabel, orgid))
+    except Exception as E:
+        return rhn.fail(E, 'disable access to channel %s for org %d' % (chanlabel, orgid))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -408,8 +423,9 @@ def enableAccess(rhn, chanlabel, orgid):
     """
     try:
         return rhn.session.channel.org.enableAccess(rhn.key, chanlabel, orgid) == 1
-    except Exception, E:
-        return rhn.fail(E,'grant access to channel %s for org %d' % (chanlabel, orgid))
+    except Exception as E:
+        return rhn.fail(E, 'grant access to channel %s for org %d' % (chanlabel, orgid))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -433,8 +449,9 @@ def listOrgs(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.org.list(rhn.key, chanlabel)
-    except Exception, E:
-        return rhn.fail(E,'list orgs for channel %s' % chanlabel)
+    except Exception as E:
+        return rhn.fail(E, 'list orgs for channel %s' % chanlabel)
+
 
 # from channel.software:
 #    * addPackages
@@ -499,15 +516,16 @@ def create(rhn, chanlabel, channame, summary, arch, parent='', checksum=None, gp
     try:
         if gpgkey is not None and checksum is not None:
             return rhn.session.channel.software.create(rhn.key, chanlabel, channame, summary,
-                                                  arch, parent, checksum, gpgkey) == 1
+                                                       arch, parent, checksum, gpgkey) == 1
         elif checksum is not None:
             return rhn.session.channel.software.create(rhn.key, chanlabel, channame, summary,
-                                                          arch, parent, checksum) == 1
+                                                       arch, parent, checksum) == 1
         else:
             return rhn.session.channel.software.create(rhn.key, chanlabel, channame, summary,
-                                                                        arch, parent) == 1
-    except Exception, E:
+                                                       arch, parent) == 1
+    except Exception as E:
         return rhn.fail(E, 'create software channel %s' % channame)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -548,8 +566,10 @@ def createChannel(rhn, label, name, summary, arch, parent=None, **kwargs):
         parentLabel = parent
     try:
         return rhn.session.channel.software.create(rhn.key, label, name, summary, archLabel, parentLabel, **kwargs) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create software channel %s' % label)
+
+
 # --------------------------------------------------------------------------------- #
 
 def clone(rhn, source_channel, name, label, summary, parent_label=None, arch_label=None,
@@ -584,23 +604,24 @@ def clone(rhn, source_channel, name, label, summary, parent_label=None, arch_lab
     *gpg_fingerprint(str)   - GPG fingerprint
     *description(str)       - cloned channel description
     """
-    clone_details =     {
-                    'name' : name, 'label' : label, 'summary' : summary, 'parent_label' : parent_label ,
-                    'arch_label' : arch_label, 'gpg_url' : gpg_url, 'gpg_id' : gpg_id,
-                     'gpg_fingerprint' : gpg_fingerprint, 'description' : description,
-                     }
-    for k in clone_details.keys():
+    clone_details = {
+        'name': name, 'label': label, 'summary': summary, 'parent_label': parent_label,
+        'arch_label': arch_label, 'gpg_url': gpg_url, 'gpg_id': gpg_id,
+        'gpg_fingerprint': gpg_fingerprint, 'description': description,
+    }
+    for k in list(clone_details.keys()):
         if clone_details[k] is None:
             del clone_details[k]
     try:
         # well, it returns an integer if the channel cloned successfully, so let's test that
         return isinstance(rhn.session.channel.software.clone(rhn.key, source_channel, clone_details, no_errata), int)
-    except Exception, E:
-        return rhn.fail(E, 'clone channel label %s as %s ' % (source_channel, clone_details['label'] ) )
+    except Exception as E:
+        return rhn.fail(E, 'clone channel label %s as %s ' % (source_channel, clone_details['label']))
+
 
 # --------------------------------------------------------------------------------- #
 
-def cloneChannel(rhn, sourcelabel, noerrata = False, **kwargs):
+def cloneChannel(rhn, sourcelabel, noerrata=False, **kwargs):
     """
     API:
     channel.software.clone
@@ -637,20 +658,19 @@ def cloneChannel(rhn, sourcelabel, noerrata = False, **kwargs):
     """
     try:
         res = rhn.session.channel.software.clone(rhn.key, sourcelabel, kwargs, noerrata)
-    # SH : For 5.4 just cloning via channel.software.clone is not enough apparently, see :
-    # https://access.redhat.com/kb/docs/DOC-55475
-    # Without this logic, kicstart profiles fail to find some packages in child channels,
-    # meaning things basically don't work
-        if isinstance(res,int):
+        # SH : For 5.4 just cloning via channel.software.clone is not enough apparently, see :
+        # https://access.redhat.com/kb/docs/DOC-55475
+        # Without this logic, kicstart profiles fail to find some packages in child channels,
+        # meaning things basically don't work
+        if isinstance(res, int):
             if not noerrata:
                 mergederr = mergeErrata(rhn.key, sourcelabel, kwargs['label'])
                 mergedpkgs = mergePackages(rhn.key, sourcelabel, kwargs['label'])
                 cachegen = regenerateNeededCache(rhn.key, kwargs['label']) == 1
 
         return isinstance(res, int)
-    except Exception, E:
-        return rhn.fail(E, "clone channel %s as %s" %(sourcelabel, kwargs['label']))
-
+    except Exception as E:
+        return rhn.fail(E, "clone channel %s as %s" % (sourcelabel, kwargs['label']))
 
 
 # --------------------------------------------------------------------------------- #
@@ -660,6 +680,7 @@ def deleteChannel(rhn, chanlabel):
     wrapper for backwards compat
     """
     return delete(rhn, chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -683,9 +704,10 @@ def delete(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.software.delete(rhn.key, chanlabel) == 1
-    except Exception, E:
-        return rhn.fail(E, 'delete channel %s ' % chanlabel )
-    
+    except Exception as E:
+        return rhn.fail(E, 'delete channel %s ' % chanlabel)
+
+
 # --------------------------------------------------------------------------------- #
 
 def detailsByLabel(rhn, chanlabel):
@@ -708,8 +730,9 @@ def detailsByLabel(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.software.getDetails(rhn.key, chanlabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'retrieve details for channel %s ' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -733,8 +756,9 @@ def detailsByID(rhn, chanid):
     """
     try:
         return rhn.session.channel.software.getDetails(rhn.key, chanid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'retrieve details for channel %s ' % chanid)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -759,8 +783,9 @@ def addPackages(rhn, chanlabel, packagelist):
     """
     try:
         return rhn.session.channel.software.addPackages(rhn.key, chanlabel, packagelist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'add packages to %s' % (chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -784,8 +809,9 @@ def availableEntitlements(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.software.availableEntitlements(rhn.key, chanlabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get number of available entitlements for channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -809,8 +835,9 @@ def isGloballySubscribable(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.software.isGloballySubscribable(rhn.key, chanlabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get subscribability details for %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -833,9 +860,10 @@ def setGloballySubscribable(rhn, chanlabel):
     chanlabel(str)      - channel label
     """
     try:
-        return  rhn.session.channel.software.setGloballySubscribable(rhn.key, chanlabel) == 1
-    except Exception, E:
+        return rhn.session.channel.software.setGloballySubscribable(rhn.key, chanlabel) == 1
+    except Exception as E:
         return rhn.fail(E, 'set channel %s globally subscribable ' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -859,9 +887,10 @@ def isUserSubscribable(rhn, chanlabel, username):
     username(str)         - the user to check.
     """
     try:
-        return  rhn.session.channel.software.isUserSubscribable(rhn.key, chanlabel, username) == 1
-    except Exception, E:
-        return rhn.fail(E, 'check if user %s can subscribe machines to channel %s' % ( username, chanlabel) )
+        return rhn.session.channel.software.isUserSubscribable(rhn.key, chanlabel, username) == 1
+    except Exception as E:
+        return rhn.fail(E, 'check if user %s can subscribe machines to channel %s' % (username, chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -886,8 +915,9 @@ def setUserSubscribable(rhn, chanlabel, username):
     """
     try:
         return rhn.session.channel.software.setUserSubscribable(rhn.key, chanlabel, username) == 1
-    except Exception, E:
-        return rhn.fail(E, 'set channel %s subscribable by user %s' % ( chanlabel, username) )
+    except Exception as E:
+        return rhn.fail(E, 'set channel %s subscribable by user %s' % (chanlabel, username))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -922,8 +952,9 @@ def listAllPackages(rhn, chanlabel, start_date=None, end_date=None):
             return rhn.session.channel.software.listAllPackages(rhn.key, chanlabel, start_date)
         else:
             return rhn.session.channel.software.listAllPackages(rhn.key, chanlabel, start_date, end_date)
-    except Exception, E:
-        return rhn.fail(E, 'list packages in channel %s' % ( chanlabel ) )
+    except Exception as E:
+        return rhn.fail(E, 'list packages in channel %s' % (chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -946,8 +977,9 @@ def listArches(rhn):
     """
     try:
         return rhn.session.channel.software.listArches(rhn.key)
-    except Exception, E:
-        return rhn.fail(E, 'list possible channel architectures' )
+    except Exception as E:
+        return rhn.fail(E, 'list possible channel architectures')
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -971,8 +1003,9 @@ def listChildren(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.software.listChildren(rhn.key, chanlabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list children of base channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1006,8 +1039,9 @@ def listErrata(rhn, chanlabel, start_date=None, end_date=None):
             return rhn.session.channel.software.listErrata(rhn.key, chanlabel, start_date)
         else:
             return rhn.session.channel.software.listErrata(rhn.key, chanlabel, start_date, end_date)
-    except Exception, E:
-        return rhn.fail(E, 'list errata in channel %s' % ( chanlabel ) )
+    except Exception as E:
+        return rhn.fail(E, 'list errata in channel %s' % (chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1034,12 +1068,13 @@ def listErrataByType(rhn, chanlabel, errtype):
     """
     try:
         return rhn.session.channel.software.listErrataByType(rhn.key, chanlabel, errtype)
-    except Exception, E:
-        return rhn.fail(E, 'fetch %s errata for channel %s' %( errtype, chanlabel ) )
+    except Exception as E:
+        return rhn.fail(E, 'fetch %s errata for channel %s' % (errtype, chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
-def listLatestPackages(rhn,chanlabel):
+def listLatestPackages(rhn, chanlabel):
     """
     API:
     channel.software.listLatestPackages
@@ -1059,8 +1094,9 @@ def listLatestPackages(rhn,chanlabel):
     """
     try:
         return rhn.session.channel.software.listLatestPackages(rhn.key, chanlabel)
-    except Exception, E:
-        return rhn.fail(E, 'list latest packages in channel %s' % ( chanlabel ) )
+    except Exception as E:
+        return rhn.fail(E, 'list latest packages in channel %s' % (chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1083,8 +1119,9 @@ def listPackagesWithoutChannel(rhn):
     """
     try:
         return rhn.session.channel.software.listPackagesWithoutChannel(rhn.key)
-    except Exception, E:
-        return rhn.fail(E, 'list packages that are not in a  channel' )
+    except Exception as E:
+        return rhn.fail(E, 'list packages that are not in a  channel')
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1108,8 +1145,9 @@ def listSubscribedSystems(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.software.listSubscribedSystems(rhn.key, chanlabel)
-    except Exception, E:
-        return rhn.fail(E, 'list systems subscribed to channel %s' % ( chanlabel ) )
+    except Exception as E:
+        return rhn.fail(E, 'list systems subscribed to channel %s' % (chanlabel))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1133,8 +1171,9 @@ def listSystemChannels(rhn, systemid):
     """
     try:
         return rhn.session.channel.software.listSystemChannels(rhn.key, systemid)
-    except Exception, E:
-        return rhn.fail(E, 'list channels for system ID %d' % ( systemid ) )
+    except Exception as E:
+        return rhn.fail(E, 'list channels for system ID %d' % (systemid))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1155,8 +1194,9 @@ def setSystemChannels(rhn, systemid, chanlist):
     """
     try:
         rhn.session.channel.software.setSystemChannels(rhn.key, systemid)
-    except Exception, E:
-        return rhn.fail(E, 'subscribing system ID %d to channels %s' % ( systemid, ','.join(chanlist) ) )
+    except Exception as E:
+        return rhn.fail(E, 'subscribing system ID %d to channels %s' % (systemid, ','.join(chanlist)))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1193,8 +1233,9 @@ def mergeErrata(rhn, sourcechan, destchan, start_date=None, end_date=None):
         start_date = time.strftime('%Y-%m-%d %H:%M:%S', (1980, 1, 1, 0, 0, 0, 0, 0, 0))
     try:
         return rhn.session.channel.software.mergeErrata(rhn.key, sourcechan, destchan, start_date, end_date)
-    except Exception, E:
-        return rhn.fail(E, 'merge errata from channel %s to channel %s' % (sourcechan, destchan) )
+    except Exception as E:
+        return rhn.fail(E, 'merge errata from channel %s to channel %s' % (sourcechan, destchan))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1219,8 +1260,9 @@ def mergePackages(rhn, sourcechan, destchan):
     """
     try:
         return rhn.session.channel.software.mergePackages(rhn.key, sourcechan, destchan)
-    except Exception, E:
-        return rhn.fail(E, 'merge packages from channel %s to channel %s ' % ( sourcechan, destchan ) )
+    except Exception as E:
+        return rhn.fail(E, 'merge packages from channel %s to channel %s ' % (sourcechan, destchan))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1252,9 +1294,10 @@ def regenerateNeededCache(rhn, chanlabel=None):
             return rhn.session.channel.software.regenerateNeededCache(rhn.key, chanlabel) == 1
         else:
             return rhn.session.channel.software.regenerateNeededCache(rhn.key) == 1
-            
-    except Exception, E:
+
+    except Exception as E:
         return rhn.fail(E, 'Regenerate Errata and Package Cache for channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1278,8 +1321,9 @@ def regenerateYumCache(rhn, chanlabel):
     """
     try:
         return rhn.session.channel.software.regenerateYumCache(rhn.key, chanlabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'regenerate Yum cache for channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1304,8 +1348,9 @@ def removePackages(rhn, chanlabel, package_ids):
     """
     try:
         return rhn.session.channel.software.removePackages(rhn.key, chanlabel, package_ids) == 1
-    except Exception, E:
-        return rhn.fail(E, 'remove  package IDs %s from channel %s' % ( chanlabel, ','.join(package_ids)))
+    except Exception as E:
+        return rhn.fail(E, 'remove  package IDs %s from channel %s' % (chanlabel, ','.join(package_ids)))
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1333,9 +1378,10 @@ def setContactDetails(rhn, chanlabel, name, email, phone, policy):
     """
     try:
         return rhn.session.channel.software.setContactDetails(rhn.key, chanlabel,
-                                                          name, email, phone, policy) == 1
-    except Exception, E:
+                                                              name, email, phone, policy) == 1
+    except Exception as E:
         return rhn.fail(E, 'set contact details for channel %s' % chanlabel)
+
 
 # --------------------------------------------------------------------------------- #
 
@@ -1358,10 +1404,11 @@ def listChildChannels(rhn, chanlabel):
     chanlabel(str)      - channel label
     """
     try:
-        return sorted([ x['label'] for x in rhn.session.channel.software.listChildren(rhn.key, chanlabel)])
-    except Exception, E:
-        return rhn.fail(E, 'list children of channel %s' % ( channel_label ) )
-    
+        return sorted([x['label'] for x in rhn.session.channel.software.listChildren(rhn.key, chanlabel)])
+    except Exception as E:
+        return rhn.fail(E, 'list children of channel %s' % (channel_label))
+
+
 # --------------------------------------------------------------------------------- #
 
 def listBaseChannels(rhn, regex=None):
@@ -1395,12 +1442,13 @@ def listBaseChannels(rhn, regex=None):
                 basechannels.append(channel['label'])
         if regex is not None:
             pattern = re.compile(r'%s' % str(regex))
-            return [ x for x in basechannels if pattern.search(x) ]
+            return [x for x in basechannels if pattern.search(x)]
         else:
             return basechannels
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list base channels on your satellite')
-    
+
+
 def channelsByArch(rhn, archlabel):
     """
     API:
@@ -1422,9 +1470,10 @@ def channelsByArch(rhn, archlabel):
     """
     try:
         chanlist = rhn.session.channel.listSoftwareChannels(rhn.key)
-        return [ x['label'] for x in chanlist if x['arch'] == archlabel ]
-    except Exception, E:
+        return [x['label'] for x in chanlist if x['arch'] == archlabel]
+    except Exception as E:
         return rhn.fail(E, "find channels with arch %s" % (arch))
+
 
 # --------------------------------------------------------------------------------- #
 # Methods under here are not technically part of the API, just utility functions I added
@@ -1450,8 +1499,9 @@ def hasChildren(rhn, chanlabel):
     """
     try:
         return len(rhn.session.channel.software.listChildren(rhn.key, chanlabel)) != 0
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'check for children of channel %s' % channel_label)
+
 
 def deleteRecursive(rhn, chanlabel):
     """
@@ -1480,8 +1530,9 @@ def deleteRecursive(rhn, chanlabel):
                 rhn.session.channel.software.delete(rhn.key, child['label'])
         # handily, this will fail if any of the child channels could not be deleted:
         return rhn.session.channel.software.delete(rhn.key, chanlabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'recursively delete channel %s and all its child channels' % channel_label)
+
 
 def cloneRecursive(rhn, chanlabel, prefix=None, suffix=None):
     """
@@ -1509,7 +1560,8 @@ def cloneRecursive(rhn, chanlabel, prefix=None, suffix=None):
     because source and target labels will be identical.
     """
     return 'Not Implemented Yet'
-    
+
+
 # --------------------------------------------------------------------------------- #
 def channelExists(rhn, channel_label):
     """
@@ -1523,14 +1575,13 @@ def channelExists(rhn, channel_label):
     channel_label(str)  - label of channel to look for
     """
     try:
-        chanlist = [ x['label'] for x in listSoftwareChannels(rhn) ]
+        chanlist = [x['label'] for x in listSoftwareChannels(rhn)]
         if channel_label in chanlist:
             return True
         else:
             return False
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'check channel existence')
-
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

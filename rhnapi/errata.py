@@ -43,11 +43,12 @@ def addPackages(rhn, erratum, packagelist):
     """
     try:
         return rhn.session.errata.addPackages(rhn.key, erratum, packagelist)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'add packagelist to erratum %s' % erratum)
 
+
 # ---------------------------------------------------------------------------------- #
-        
+
 def applicableToChannels(rhn, erratum):
     """
     API:
@@ -68,8 +69,9 @@ def applicableToChannels(rhn, erratum):
     """
     try:
         return rhn.session.errata.applicableToChannels(rhn.key, erratum)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list channels affected by erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -96,8 +98,9 @@ def bugzillaFixes(rhn, erratum):
     """
     try:
         return rhn.session.errata.bugzillaFixes(rhn.key, erratum)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list bugzilla fixes provided by by erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -122,8 +125,9 @@ def clone(rhn, chanlabel, errlist):
     """
     try:
         return rhn.session.errata.clone(rhn.key, chanlabel, errlist)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'clone errata %s into channel %s' % (','.join(errlist), chanlabel))
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -148,8 +152,9 @@ def cloneAsync(rhn, chanlabel, errlist):
     """
     try:
         return rhn.session.errata.cloneAsync(rhn.key, chanlabel, errlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'clone errata %s into channel %s' % (','.join(errlist), chanlabel))
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -178,8 +183,9 @@ def cloneAsOriginal(rhn, chanlabel, errlist):
     """
     try:
         return rhn.session.errata.cloneAsOriginal(rhn.key, chanlabel, errlist)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'clone errata into channel %s' % chanlabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -203,13 +209,13 @@ def cloneAsOriginalAsync(rhn, chanlabel, errlist):
     """
     try:
         return rhn.session.errata.cloneAsOriginalAsync(rhn.key, chanlabel, errlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'Asynchronously clone errata into channel %s', chanlabel)
 
 
 # ---------------------------------------------------------------------------------- #
 
-def create(rhn, errobj, bugs = [], keywords = [] , packages = [], publish = False, channels = None  ):
+def create(rhn, errobj, bugs=[], keywords=[], packages=[], publish=False, channels=None):
     """
     API:
     errata.create
@@ -250,12 +256,14 @@ def create(rhn, errobj, bugs = [], keywords = [] , packages = [], publish = Fals
     """
     try:
         return rhn.session.errata.create(rhn.key, errobj, bugs, keywords, packages, channels)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create new erratum %(erratum_name)s' % errobj)
+
 
 # ---------------------------------------------------------------------------------- #
 
-def createErratum(rhn, synopsis, name, release, errtype, product = '', topic = '' , description = '', references = '' , notes = '', solution = ''):
+def createErratum(rhn, synopsis, name, release, errtype, product='', topic='', description='', references='', notes='',
+                  solution=''):
     """
     API:
     none, special simplified case of errata.create
@@ -288,9 +296,10 @@ def createErratum(rhn, synopsis, name, release, errtype, product = '', topic = '
     notes(str)                      - freeform notes str
     solutionn(str)                  - how the 'bug' was fixed (i.e. what the erratum does)
     """
-    return create(rhn, { 'synopsis' : synopsis, 'erratum_name' : name, 'erratum_release' : release,
-                         'erratum_type' : errtype, 'product' : product, 'topic' : topic,
-                         'description' : description, 'references' : references, 'solution' : solution} )
+    return create(rhn, {'synopsis': synopsis, 'erratum_name': name, 'erratum_release': release,
+                        'erratum_type': errtype, 'product': product, 'topic': topic,
+                        'description': description, 'references': references, 'solution': solution})
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -314,12 +323,13 @@ def delete(rhn, erratum):
     """
     try:
         return rhn.session.errata.delete(rhn.key, erratum) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
-def findByCve(rhn, cvename):        
+def findByCve(rhn, cvename):
     """
     API:
     errata.findByCve
@@ -339,8 +349,9 @@ def findByCve(rhn, cvename):
     """
     try:
         return rhn.session.errata.findByCve(rhn.key, cvename)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'find errata for CVE %s' % cvename)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -364,8 +375,9 @@ def getDetails(rhn, erratum):
     """
     try:
         return rhn.session.errata.getDetails(rhn.key, erratum)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list details for erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -389,11 +401,12 @@ def listAffectedSystems(rhn, erratum):
     """
     try:
         return rhn.session.errata.listAffectedSystems(rhn.key, erratum)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list systems affected by erratum %s' % erratum)
 
+
 # ---------------------------------------------------------------------------------- #
-    
+
 def listByDate(rhn, chanlabel):
     """
     API:
@@ -416,8 +429,9 @@ def listByDate(rhn, chanlabel):
     """
     try:
         return rhn.session.errata.listByDate(rhn.key, chanlabel)
-    except Exception, E:
-        return rhn.fail(E, 'list errata by date for channel %s' % (chanlabel) )
+    except Exception as E:
+        return rhn.fail(E, 'list errata by date for channel %s' % (chanlabel))
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -441,8 +455,9 @@ def listCVEs(rhn, erratum):
     """
     try:
         return rhn.session.errata.listCves(rhn.key, erratum)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list CVEs for erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -466,8 +481,9 @@ def listKeywords(rhn, erratum):
     """
     try:
         return rhn.session.errata.listKeywords(rhn.key, erratum)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list keywords for erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -491,8 +507,9 @@ def listPackages(rhn, erratum):
     """
     try:
         return rhn.session.errata.listPackages(rhn.key, erratum)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list packages affected by erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -515,9 +532,11 @@ def listPackageNames(rhn, erratum):
     erratum(str)        - errata erratum name
     """
     try:
-        return sorted([ "%(name)s-%(version)s-%(release)s.%(arch_label)s.rpm" % x for x in rhn.session.errata.listPackages(rhn.key, erratum)])
-    except Exception, E:
+        return sorted(["%(name)s-%(version)s-%(release)s.%(arch_label)s.rpm" % x for x in
+                       rhn.session.errata.listPackages(rhn.key, erratum)])
+    except Exception as E:
         return rhn.fail(E, 'list packages provided by erratum %s' % erratum)
+
 
 def getOval(rhn, errata_id):
     """
@@ -540,8 +559,9 @@ def getOval(rhn, errata_id):
         return "This method is no longer available from Satellite 5.4 onwards."
     try:
         return rhn.session.errata.getOval(rhn.key, errata_id)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get Oval info for the erratum %s' % errata_id)
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -564,8 +584,9 @@ def listUnpublishedErrata(rhn):
     """
     try:
         return rhn.session.errata.listUnpublishedErrata(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list unpublished errata')
+
 
 # ---------------------------------------------------------------------------------- #
 
@@ -590,12 +611,13 @@ def publish(rhn, erratum, chanlist):
     """
     try:
         return rhn.session.errata.publish(rhn.key, erratum, chanlist)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'publish erratum %s to chanlist %s' % (erratum, ','.join(chanlist)))
+
 
 # ---------------------------------------------------------------------------------- #
 
-def publishAsOriginal(rhn, erratum, chanlist):        
+def publishAsOriginal(rhn, erratum, chanlist):
     """
     API:
     errata.publishAsOriginal
@@ -617,12 +639,13 @@ def publishAsOriginal(rhn, erratum, chanlist):
     """
     try:
         return rhn.session.errata.publishAsOriginal(rhn.key, erratum, chanlist)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'publish erratum %s' % erratum)
+
 
 # ---------------------------------------------------------------------------------- #
 
-def removePackages(rhn, erratum, packageids):        
+def removePackages(rhn, erratum, packageids):
     """
     API:
     errata.removePackages
@@ -644,10 +667,11 @@ def removePackages(rhn, erratum, packageids):
     """
     try:
         return rhn.session.errata.removePackages(rhn.key, erratum, packageids)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'remove packages from erratum %s' % erratum)
 
-def setDetails(rhn, erratum, errdict):        
+
+def setDetails(rhn, erratum, errdict):
     """
     API:
     errata.setDetails
@@ -670,8 +694,9 @@ def setDetails(rhn, erratum, errdict):
     """
     try:
         return rhn.session.errata.setDetails(rhn.key, erratum, errdict) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set details for erratum %s' % erratum)
+
 
 def modifyDetails(rhn, erratum, **kwargs):
     """
@@ -709,8 +734,8 @@ def modifyDetails(rhn, erratum, **kwargs):
     """
     try:
         return rhn.session.errata.setDetails(rhn.key, erratum, kwargs) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'modify details for erratum %s' % erratum)
-        
+
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

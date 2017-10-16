@@ -18,7 +18,8 @@
 #
 # You should have received a copy of the GNU General Public License along
 # with python-rhnapi. If not, see http://www.gnu.org/licenses/.
-import xmlrpclib
+import xmlrpc.client
+
 
 def logexcptn(fn):
     # this expects a given fn to be provided with an 'rhn' argument
@@ -28,17 +29,14 @@ def logexcptn(fn):
         rhn = args[0]
         try:
             fn(*args, **kwargs)
-        except xmlrpclib.Fault, F:
-            rhn.logError("%s (%s)" %(F.faultString, str(F.faultCode)))
+        except xmlrpc.client.Fault as F:
+            rhn.logError("%s (%s)" % (F.faultString, str(F.faultCode)))
             return False
-        except Exception, E:
+        except Exception as E:
             rhn.logError("Non-XMLRPC Error: %s" % E.msg)
             return False
 
     return wrapper
-
-            
-
 
 # footer - do not edit below this line
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

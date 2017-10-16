@@ -22,15 +22,16 @@
 
 # mapping of roles to "pretty names"
 rolemaps = {
-        'satellite_admin'       : 'Satellite Administrator',
-        'org_admin'             : 'Organisation Administrator',
-        'channel_admin'         : 'Software Channel Administrator',
-        'config_admin'          : 'Configuration Channel Administrator',
-        'system_group_admin'    : 'System Group Administrator',
-        'activation_key_admin'  : 'Activation key Administrator',
-        'monitoring_admin'      : 'Monitoring Administrator',
-        'normal_user'           : 'Normal (Unprivileged) User'
-        }
+    'satellite_admin': 'Satellite Administrator',
+    'org_admin': 'Organisation Administrator',
+    'channel_admin': 'Software Channel Administrator',
+    'config_admin': 'Configuration Channel Administrator',
+    'system_group_admin': 'System Group Administrator',
+    'activation_key_admin': 'Activation key Administrator',
+    'monitoring_admin': 'Monitoring Administrator',
+    'normal_user': 'Normal (Unprivileged) User'
+}
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -56,8 +57,9 @@ def addAssignedSystemGroup(rhn, rhnuser, groupname, isdefault):
     """
     try:
         return rhn.session.user.addAssignedSystemGroup(rhn.key, rhnuser, groupname, isdefault) == 1
-    except Exception, E:
-        return rhn.fail(E, 'give user %s access to system group %s' %(rhnuser, groupname))
+    except Exception as E:
+        return rhn.fail(E, 'give user %s access to system group %s' % (rhnuser, groupname))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -83,8 +85,9 @@ def addAssignedSystemGroups(rhn, rhnuser, grouplist, isdefault):
     """
     try:
         return rhn.session.user.addAssignedSystemGroup(rhn.key, rhnuser, grouplist, isdefault) == 1
-    except Exception, E:
-        return rhn.fail(E, 'assign system groups [%s] to user %s' %(','.join(grouplist), rhnuser))
+    except Exception as E:
+        return rhn.fail(E, 'assign system groups [%s] to user %s' % (','.join(grouplist), rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -111,8 +114,9 @@ def addDefaultSystemGroup(rhn, rhnuser, groupname):
     """
     try:
         return rhn.session.user.addDefaultSystemGroup(rhn.key, rhnuser, groupname) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "add group %s to user %s's default system groups" % (groupname, rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -139,8 +143,9 @@ def addDefaultSystemGroups(rhn, rhnuser, grouplist):
     """
     try:
         return rhn.session.user.addDefaultSystemGroup(rhn.key, rhnuser, grouplist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "add groups [%s] to user %s's default system groups" % (','.join(grouplist), rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -171,12 +176,13 @@ def addRole(rhn, rhnuser, role):
     """
     try:
         return rhn.session.user.addRole(rhn.key, rhnuser, role) == 1
-    except Exception, E:
-        return rhn.fail(E, "add role %s to user %s" %(role, rhnuser))
+    except Exception as E:
+        return rhn.fail(E, "add role %s to user %s" % (role, rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
-def create(rhn, rhnuser, password, firstname, lastname, email, enablepam = 0):
+def create(rhn, rhnuser, password, firstname, lastname, email, enablepam=0):
     """
     API:
     user.create
@@ -201,8 +207,9 @@ def create(rhn, rhnuser, password, firstname, lastname, email, enablepam = 0):
     """
     try:
         return rhn.session.user.create(rhn.key, rhnuser, password, firstname, lastname, email, enablepam) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -226,8 +233,9 @@ def delete(rhn, rhnuser):
     """
     try:
         return rhn.session.user.delete(rhn.key, rhnuser) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'delete user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -251,8 +259,9 @@ def disable(rhn, rhnuser):
     """
     try:
         return rhn.session.user.disable(rhn.key, rhnuser) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'disable user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -276,8 +285,9 @@ def enable(rhn, rhnuser):
     """
     try:
         return rhn.session.user.enable(rhn.key, rhnuser) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'disable user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -312,8 +322,9 @@ def getDetails(rhn, rhnuser):
     """
     try:
         return rhn.session.user.getDetails(rhn.key, rhnuser)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'retrieve info for user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -336,9 +347,10 @@ def getLoggedInTime(rhn, rhnuser):
     rhnuser(str)            - RHN user account
     """
     try:
-        return rhn.session.getLoggedInTime(rhn.key, rhnuser) 
-    except Exception, E:
-        return rhn.fail(E,'retrieve last login for user %s' % rhnuser)
+        return rhn.session.getLoggedInTime(rhn.key, rhnuser)
+    except Exception as E:
+        return rhn.fail(E, 'retrieve last login for user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -361,8 +373,9 @@ def listAssignableRoles(rhn):
     """
     try:
         return rhn.session.user.listAssignableRoles(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list roles assignable by user %s' % rhn.login)
+    except Exception as E:
+        return rhn.fail(E, 'list roles assignable by user %s' % rhn.login)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -392,9 +405,10 @@ def listAssignedSystemGroups(rhn, rhnuser):
     rhnuser(str)            - RHN user account
     """
     try:
-        return rhn.session.user.listAssignedSystemGroups(rhn.key, rhnuser) 
-    except Exception, E:
-        return rhn.fail(E,'list system groups administered by user %s' % rhnuser)
+        return rhn.session.user.listAssignedSystemGroups(rhn.key, rhnuser)
+    except Exception as E:
+        return rhn.fail(E, 'list system groups administered by user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -424,13 +438,14 @@ def listDefaultSystemGroups(rhn, rhnuser):
     rhnuser(str)            - RHN user account
     """
     try:
-        return rhn.session.user.listDefaultSystemGroups(rhn.key, rhnuser) 
-    except Exception, E:
-        return rhn.fail(E,'list default system groups for user %s' % rhnuser)
+        return rhn.session.user.listDefaultSystemGroups(rhn.key, rhnuser)
+    except Exception as E:
+        return rhn.fail(E, 'list default system groups for user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
-def listRoles(rhn,rhnuser, pretty = False):
+def listRoles(rhn, rhnuser, pretty=False):
     """
     API:
     user.listRoles (with additional arg)
@@ -455,17 +470,18 @@ def listRoles(rhn,rhnuser, pretty = False):
     try:
         roles = rhn.session.user.listRoles(rhn.key, rhnuser)
         if len(roles) == 0:
-            roles = [ 'normal_user' ]
+            roles = ['normal_user']
         elif 'satellite_admin' in roles:
-            roles = [ 'satellite_admin']
+            roles = ['satellite_admin']
         elif 'org_admin' in roles:
-            roles = [ 'org_admin' ]
+            roles = ['org_admin']
         if pretty:
-            return [ rolemaps[x] for x in roles ]
+            return [rolemaps[x] for x in roles]
         else:
             return roles
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list roles for user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -494,8 +510,9 @@ def listUsers(rhn):
     """
     try:
         return rhn.session.user.listUsers(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list users on rhn server %s' % rhn.hostname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -521,8 +538,9 @@ def removeAssignedSystemGroup(rhn, rhnuser, groupname, isdefault):
     """
     try:
         return rhn.session.user.removeAssignedSystemGroup(rhn.key, rhnuser, groupname, isdefault) == 1
-    except Exception, E:
-        return rhn.fail(E, 'remove user %s access to system group %s' %(rhnuser, groupname))
+    except Exception as E:
+        return rhn.fail(E, 'remove user %s access to system group %s' % (rhnuser, groupname))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -548,8 +566,9 @@ def removeAssignedSystemGroups(rhn, rhnuser, grouplist, isdefault):
     """
     try:
         return rhn.session.user.removeAssignedSystemGroup(rhn.key, rhnuser, grouplist, isdefault) == 1
-    except Exception, E:
-        return rhn.fail(E, 'remove system groups [%s] from user %s' %(','.join(grouplist), rhnuser))
+    except Exception as E:
+        return rhn.fail(E, 'remove system groups [%s] from user %s' % (','.join(grouplist), rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -574,8 +593,9 @@ def removeDefaultSystemGroup(rhn, rhnuser, groupname):
     """
     try:
         return rhn.session.user.removeDefaultSystemGroup(rhn.key, rhnuser, groupname) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, "remove group %s to user %s's default system groups" % (groupname, rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -600,8 +620,10 @@ def removeDefaultSystemGroups(rhn, rhnuser, grouplist):
     """
     try:
         return rhn.session.user.removeDefaultSystemGroup(rhn.key, rhnuser, grouplist) == 1
-    except Exception, E:
-        return rhn.fail(E, "remove groups [%s] from user %s's default system group list" % (','.join(grouplist), rhnuser))
+    except Exception as E:
+        return rhn.fail(E,
+                        "remove groups [%s] from user %s's default system group list" % (','.join(grouplist), rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -624,9 +646,10 @@ def removeRole(rhn, rhnuser, role):
     rhnuser(str)            - RHN user account
     """
     try:
-        return rhn.session.user.removeRole(rhn.key,rhnuser, role )
-    except Exception, E:
+        return rhn.session.user.removeRole(rhn.key, rhnuser, role)
+    except Exception as E:
         return rhn.fail(E, "remove role %s from user %s" % (role, rhnuser))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -651,9 +674,10 @@ def setDetails(rhn, rhnuser, userinfo):
 
     """
     try:
-        return rhn.session.user.setDetails(rhn.key,rhnuser, userinfo) == 1
-    except Exception, E:
+        return rhn.session.user.setDetails(rhn.key, rhnuser, userinfo) == 1
+    except Exception as E:
         return rhn.fail(E, 'retrieve info for user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -680,9 +704,10 @@ def setDetailsByArg(rhn, rhnuser, **kwargs):
     'password' (str)        - user password
     """
     try:
-        return rhn.session.user.setDetails(rhn.key,rhnuser, kwargs) == 1
-    except Exception, E:
+        return rhn.session.user.setDetails(rhn.key, rhnuser, kwargs) == 1
+    except Exception as E:
         return rhn.fail(E, 'retrieve info for user %s' % rhnuser)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -712,8 +737,8 @@ def usePamAuthentication(rhn, rhnuser, enablepam):
         task = 'disable'
     try:
         return rhn.session.user.usePamAuthentication(rhn.key, rhnuser, enablepam) == 1
-    except Exception, E:
-        return rhn.fail(E,'%s PAM Authentication for user %s' %( task, rhnuser))
+    except Exception as E:
+        return rhn.fail(E, '%s PAM Authentication for user %s' % (task, rhnuser))
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

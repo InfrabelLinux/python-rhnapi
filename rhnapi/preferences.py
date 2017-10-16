@@ -28,10 +28,11 @@ Actual API calls listed in the individual methods
 
 __author__ = "Stuart Sears"
 
+
 # ---------------------------------------------------------------------------- #
 
 def listLocales(rhn):
-	"""
+    """
     API:
     preferences.locale.listLocales
 
@@ -44,18 +45,19 @@ def listLocales(rhn):
     returns:
     list of strings (recognised local/language abbreviations)
     
-	params:
-	rhn                     - an authenticated RHN session.
-	"""
-	try:
-		return rhn.session.preferences.locale.listLocales()
-	except Exception, E:
-		return rhn.fail(E, 'list available locales')
+    params:
+    rhn                     - an authenticated RHN session.
+    """
+    try:
+        return rhn.session.preferences.locale.listLocales()
+    except Exception as E:
+        return rhn.fail(E, 'list available locales')
+
 
 # ---------------------------------------------------------------------------- #
 
 def listTimeZones(rhn):
-	"""
+    """
     API:
     preferences.locale.listTimeZones
 
@@ -71,18 +73,19 @@ def listTimeZones(rhn):
              'olson_name': 'Pacific/Norfolk',i
              'time_zone_id': 7021
             }
-	params:
-	rhn                     - an authenticated RHN session.
-	"""
-	try:
-		return rhn.session.preferences.locale.listTimeZones()
-	except Exception, E:
-		return rhn.fail(E, 'list available Timezones on RHN server %s' % rhn.hostname)
+    params:
+    rhn                     - an authenticated RHN session.
+    """
+    try:
+        return rhn.session.preferences.locale.listTimeZones()
+    except Exception as E:
+        return rhn.fail(E, 'list available Timezones on RHN server %s' % rhn.hostname)
+
 
 # ---------------------------------------------------------------------------- #
 
 def setTimeZone(rhn, username, tzid):
-	"""
+    """
     API:
     preferences.locale.setTimeZone
 
@@ -95,20 +98,21 @@ def setTimeZone(rhn, username, tzid):
     returns:
     True, or throws exception
 
-	params:
-	rhn                     - an authenticated RHN session.
-	username(str)           - user username
-	tzid(int)               - A valid timezone identifier, from listTimeZones()
-	"""
-	try:
-		return rhn.session.preferences.locale.setTimeZone(rhn.key, username, tzid) == 1
-	except Exception, E:
-		return rhn.fail(E, 'set timezone for user %s' % username)
+    params:
+    rhn                     - an authenticated RHN session.
+    username(str)           - user username
+    tzid(int)               - A valid timezone identifier, from listTimeZones()
+    """
+    try:
+        return rhn.session.preferences.locale.setTimeZone(rhn.key, username, tzid) == 1
+    except Exception as E:
+        return rhn.fail(E, 'set timezone for user %s' % username)
+
 
 # ---------------------------------------------------------------------------- #
 
 def setLocale(rhn, username, locale):
-	"""
+    """
     API:
     preferences.locale.setLocale
 
@@ -121,15 +125,15 @@ def setLocale(rhn, username, locale):
     returns:
     True, or throws exception
 
-	params:
-	rhn                     - an authenticated RHN session.
-	username(str)           - user username
-	locale(str)             - A valid locale name from listLocales()
-	"""
-	try:
-		return rhn.session.preferences.locale.setLocale(rhn.key, username, locale) == 1
-	except Exception, E:
-		return rhn.fail(E, 'set locale %s for user %s' %(locale, username))
+    params:
+    rhn                     - an authenticated RHN session.
+    username(str)           - user username
+    locale(str)             - A valid locale name from listLocales()
+    """
+    try:
+        return rhn.session.preferences.locale.setLocale(rhn.key, username, locale) == 1
+    except Exception as E:
+        return rhn.fail(E, 'set locale %s for user %s' % (locale, username))
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

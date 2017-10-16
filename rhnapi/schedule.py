@@ -27,6 +27,7 @@ created for RHN Satellite 5.4
 """
 __author__ = "Stuart Sears"
 
+
 # ---------------------------------------------------------------------------- #
 
 def cancelActions(rhn, actionids):
@@ -50,8 +51,9 @@ def cancelActions(rhn, actionids):
     """
     try:
         return rhn.session.schedule.cancelActions(rhn.key, actionids) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'Cancel one or more of the specified scheduled actions')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -84,8 +86,9 @@ def listAllActions(rhn):
     """
     try:
         return rhn.session.schedule.listAllActions(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list all scheduled actions')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -117,12 +120,13 @@ def listArchivedActions(rhn):
     """
     try:
         return rhn.session.schedule.listArchivedActions(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list archived scheduled actions')
+
 
 # ---------------------------------------------------------------------------- #
 
-def listCompletedActions(rhn):        
+def listCompletedActions(rhn):
     """
     API:
     schedule.listCompletedActions
@@ -150,8 +154,9 @@ def listCompletedActions(rhn):
     """
     try:
         return rhn.session.schedule.listCompletedActions(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list completed scheduled actions')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -182,8 +187,9 @@ def listCompletedSystems(rhn, actionid):
     """
     try:
         return rhn.session.schedule.listCompletedSystems(rhn.key, actionid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list systems that have completed action %d' % actionid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -215,8 +221,9 @@ def listFailedActions(rhn):
     """
     try:
         return rhn.session.schedule.listFailedActions(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list failed actions')
+
 
 def listFailedSystems(rhn, actionid):
     """
@@ -245,8 +252,9 @@ def listFailedSystems(rhn, actionid):
     """
     try:
         return rhn.session.schedule.listFailedSystems(rhn.key, actionid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list failed systems for scheduled action %d' % actionid)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -278,10 +286,10 @@ def listInProgressActions(rhn):
     """
     try:
         return rhn.session.schedule.listInProgressActions(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list scheduled actions currently in progress')
 
-    
+
 # ---------------------------------------------------------------------------- #
 
 def listInProgressSystems(rhn, actionid):
@@ -311,12 +319,13 @@ def listInProgressSystems(rhn, actionid):
     """
     try:
         return rhn.session.schedule.listInProgressSystems(rhn.key, actionid)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list systems on which the schedule actions id %d is currently in progress' % actionid)
+
 
 # ---------------------------------------------------------------------------- #
 
-def rescheduleActions(rhn, actionids, failedonly = True):
+def rescheduleActions(rhn, actionids, failedonly=True):
     """
     API:
     schedule.rescheduleActions
@@ -337,7 +346,7 @@ def rescheduleActions(rhn, actionids, failedonly = True):
     """
     try:
         return rhn.session.schedule.rescheduleActions(rhn.key, actionids, failedonly) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'reschedule actions')
 
 # footer - do not edit below here

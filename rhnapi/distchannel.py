@@ -27,6 +27,7 @@ to actually do anything.
 """
 __author__ = "Stuart Sears"
 
+
 def listDefaultMaps(rhn):
     """
     API:
@@ -43,8 +44,9 @@ def listDefaultMaps(rhn):
     """
     try:
         return rhn.session.distchannel.listDefaultMaps(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'List default distribution channel maps')
+    except Exception as E:
+        return rhn.fail(E, 'List default distribution channel maps')
+
 
 def setDefaultMap(rhn, os, release, archlabel, chanlabel):
     """
@@ -70,8 +72,9 @@ def setDefaultMap(rhn, os, release, archlabel, chanlabel):
 
     try:
         return rhn.session.distchannel.setDefaultMap(rhn.key, os, release, archlabel, chanlabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'add distchannel map')
+    except Exception as E:
+        return rhn.fail(E, 'add distchannel map')
+
 
 def removeDefaultMap(rhn, os, release, archlabel):
     """
@@ -96,8 +99,8 @@ def removeDefaultMap(rhn, os, release, archlabel):
 
     try:
         return rhn.session.distchannel.setDefaultMap(rhn.key, os, release, archlabel, channelLabel='') == 1
-    except Exception, E:
-        return rhn.fail(E,'remove distchannel map')
+    except Exception as E:
+        return rhn.fail(E, 'remove distchannel map')
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

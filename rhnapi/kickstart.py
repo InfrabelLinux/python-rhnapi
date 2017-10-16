@@ -22,6 +22,7 @@
 
 from operator import itemgetter
 
+
 #     * cloneProfile
 #     * createProfile
 #     * createProfileWithCustomUrl
@@ -56,12 +57,13 @@ def cloneProfile(rhn, kslabel, clonelabel):
     """
     try:
         return rhn.session.kickstart.cloneProfile(rhn.key, kslabel, clonelabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'clone kickstart profile %s as %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
-def createProfile(rhn, kslabel, kstree, rootpass, kshost = '', virttype = 'none'):
+def createProfile(rhn, kslabel, kstree, rootpass, kshost='', virttype='none'):
     """
     API:
     kickstart.createProfile
@@ -88,8 +90,9 @@ def createProfile(rhn, kslabel, kstree, rootpass, kshost = '', virttype = 'none'
         kshost = rhn.hostname
     try:
         return rhn.session.kickstart.createProfile(rhn.key, kslabel, virttype, kstree, kshost, rootpass) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create new kickstart profile %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -120,8 +123,9 @@ def createProfileWithCustomUrl(rhn, kslabel, virttype, kstree, ksurl, rootpass):
     """
     try:
         return rhn.session.kickstart.createProfileWithCustomUrl(rhn, kslabel, virttype, kstree, ksurl, rootpass) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create kickstart %s with custom url %s' % (kslabel, ksurl))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -145,8 +149,9 @@ def deleteProfile(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.deleteProfile(rhn.key, kslabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'Delete kickstart profile %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -178,12 +183,13 @@ def importFile(rhn, kslabel, virttype, kstree, kscontent, kshost=None):
             return rhn.session.kickstart.importFile(rhn.key, kslabel, kshost, virttype, kstree, kscontent) == 1
         else:
             return rhn.session.kickstart.importFile(rhn.key, kslabel, virttype, kstree, kscontent) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create kicktart profile %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
-def importRawFile(rhn, kslabel,virttype,kstree,kscontent):
+def importRawFile(rhn, kslabel, virttype, kstree, kscontent):
     """
     API:
     kickstart.importRawFile
@@ -207,8 +213,9 @@ def importRawFile(rhn, kslabel,virttype,kstree,kscontent):
     """
     try:
         return rhn.session.kickstart.importFile(rhn.key, kslabel, virttype, kstree, kscontent) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'import kickstart file into satellite')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -232,8 +239,9 @@ def isProfileDisabled(rhn, kslabel):
     """
     try:
         return rhn.session.isProfileDisabled(rhn.key, kslabel)
-    except Exception, E:        
+    except Exception as E:
         return rhn.fail(E, 'check if kickstart profile %s is disabled' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -256,8 +264,9 @@ def listAllIpRanges(rhn):
     """
     try:
         return rhn.session.listAllIpRanges(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list all defined IP Ranges for your organisation')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -280,8 +289,9 @@ def listKickstartableChannels(rhn):
     """
     try:
         return rhn.session.kickstart.listKickstartableChannels(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list kickstartable channels available to user %s' % rhn.login)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -303,9 +313,10 @@ def listKsChannelNames(rhn):
     rhn                      - an authenticated RHN session
     """
     try:
-        return sorted([ x['label'] for x in listKickstartableChannels(rhn) ])
-    except Exception, E:
+        return sorted([x['label'] for x in listKickstartableChannels(rhn)])
+    except Exception as E:
         return rhn.fail(E, 'list kickstartable channels available to user %s' % rhn.login)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -329,8 +340,9 @@ def listKickstartableTrees(rhn, chanlabel):
     """
     try:
         return rhn.session.kickstart.listKickstartableTrees(rhn.key, chanlabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list kickstartable trees for channel %s' % chanlabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -353,9 +365,10 @@ def listKsTreeNames(rhn, chanlabel):
     chanlabel                - a software channel label
     """
     try:
-        return sorted([ x['label'] for x in rhn.session.kickstart.listKickstartableTrees(rhn.key, chanlabel)])
-    except Exception, E:
+        return sorted([x['label'] for x in rhn.session.kickstart.listKickstartableTrees(rhn.key, chanlabel)])
+    except Exception as E:
         return rhn.fail(E, 'list kickstartable trees for channel %s' % chanlabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -379,8 +392,9 @@ def listKickstarts(rhn):
     """
     try:
         return sorted(rhn.session.kickstart.listKickstarts(rhn.key), key=itemgetter('name'))
-    except Exception, E:
-        return  rhn.fail(E, 'list kickstarts on server %s' % rhn.hostname)
+    except Exception as E:
+        return rhn.fail(E, 'list kickstarts on server %s' % rhn.hostname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -405,8 +419,9 @@ def renameProfile(rhn, kslabel, newlabel):
     """
     try:
         return rhn.session.kickstart.renameProfile(rhn.key, kslabel, newlabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'rename profile %s to %s' % (kslabel, newlabel))
+
 
 # ------------------------ kickstart.filepreservation ------------------------ #
 
@@ -431,8 +446,9 @@ def createFilePreservation(rhn, fpname, filelist):
     """
     try:
         return rhn.session.kickstart.filepreservation.create(rhn.key, fpname, filelist) == 1
-    except Exception, E:
-        return rhn.fail(E,'create new file preservation %s containing files [%s]' % (fpname, ','.join(filelist)))
+    except Exception as E:
+        return rhn.fail(E, 'create new file preservation %s containing files [%s]' % (fpname, ','.join(filelist)))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -456,8 +472,9 @@ def deleteFilePreservation(rhn, fpname):
     """
     try:
         return rhn.session.kickstart.filepreservation.delete(rhn.key, fpname) == 1
-    except Exception, E:
-        return rhn.fail(E,'delete file preservation %s' % fpname)
+    except Exception as E:
+        return rhn.fail(E, 'delete file preservation %s' % fpname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -480,8 +497,9 @@ def listAllFilePreservations(rhn):
     """
     try:
         return rhn.session.kickstart.filepreservation.listAllFilePreservations(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'List file preservations')
+    except Exception as E:
+        return rhn.fail(E, 'List file preservations')
+
 
 # ---------------------------------------------------------------------------- #
 def getFilePreservationDetails(rhn, fpname):
@@ -501,9 +519,10 @@ def getFilePreservationDetails(rhn, fpname):
     """
     try:
         return rhn.session.kickstart.filepreservation.getDetails(rhn, fpname)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get details for file preservation list %s' % fpname)
-   
+
+
 # ------------------------- kickstart.keys namespace ------------------------- #
 # This namespace handles global GPG/SSL keys.
 # methods renamed slightly to handle the clash with kickstart.profile.keys   
@@ -532,8 +551,9 @@ def createCryptoKey(rhn, keydesc, keytype, content):
     """
     try:
         return rhn.session.kickstart.keys.create(rhn.key, keydesc, keytype, content) == 1
-    except Exception, E:
-        return rhn.fail(E,'create stored cryptokey %s' % keydesc)
+    except Exception as E:
+        return rhn.fail(E, 'create stored cryptokey %s' % keydesc)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -557,8 +577,9 @@ def deleteCryptoKey(rhn, keydesc):
     """
     try:
         return rhn.session.kickstart.keys.delete(rhn.key, keydesc) == 1
-    except Exception, E:
-        return rhn.fail(E,'delete crypto key %s' % keydesc)
+    except Exception as E:
+        return rhn.fail(E, 'delete crypto key %s' % keydesc)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -582,8 +603,9 @@ def getCryptoKeyDetails(rhn, keydesc):
     """
     try:
         return rhn.session.kickstart.keys.getDetails(rhn.key, keydesc)
-    except Exception, E:
-        return rhn.fail(E,'get details for key %s' % keydesc)
+    except Exception as E:
+        return rhn.fail(E, 'get details for key %s' % keydesc)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -606,8 +628,9 @@ def listAllCryptoKeys(rhn):
     """
     try:
         return rhn.session.kickstart.keys.listAllKeys(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list all GPG and SSL keys')
+    except Exception as E:
+        return rhn.fail(E, 'list all GPG and SSL keys')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -633,8 +656,9 @@ def updateCryptoKey(rhn, keydesc, keytype, keycontent):
     """
     try:
         return rhn.session.kickstart.keys.update(rhn.key, keydesc, keytype, keycontent) == 1
-    except Exception, E:
-        return rhn.fail(E,'update %s key "%s"' %(keytype, keydesc))
+    except Exception as E:
+        return rhn.fail(E, 'update %s key "%s"' % (keytype, keydesc))
+
 
 # ----------------------- kickstart.profile namespace ------------------------ #
 
@@ -686,12 +710,13 @@ def addIpRange(rhn, kslabel, minip, maxip):
     """
     try:
         return rhn.session.kickstart.profile.addIpRange(rhn.key, kslabel, minip, maxip) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'add iprange for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
-def addScript(rhn, kslabel, contents, scripttype, chroot = True, interpreter='', template = False):
+def addScript(rhn, kslabel, contents, scripttype, chroot=True, interpreter='', template=False):
     """
     API:
     kickstart.profile.addScript
@@ -715,10 +740,12 @@ def addScript(rhn, kslabel, contents, scripttype, chroot = True, interpreter='',
     *template(bool)           - enable cobbler templating in this script (default: False)
     """
     try:
-        scriptid = rhn.session.kickstart.profile.addScript(rhn.key, kslabel, contents, interpreter, scripttype, chroot, template)
+        scriptid = rhn.session.kickstart.profile.addScript(rhn.key, kslabel, contents, interpreter, scripttype, chroot,
+                                                           template)
         return isinstance(scriptid, int)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'Add kickstart %s script to kickstart %s' % (scripttype, kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -742,9 +769,10 @@ def compareActivationKeys(rhn, kslabel1, kslabel2):
     kslabel2              - label of second kickstart profile
     """
     try:
-        return rhn.session.kickstart.profile.compareActivationKeys(rhn.key,kslabel1, kslabel2)
-    except Exception, E:
-        return rhn.fail(E,'compare keys between channels %s adn %s' % (kslabel1, kslabel2))
+        return rhn.session.kickstart.profile.compareActivationKeys(rhn.key, kslabel1, kslabel2)
+    except Exception as E:
+        return rhn.fail(E, 'compare keys between channels %s adn %s' % (kslabel1, kslabel2))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -768,9 +796,10 @@ def compareAdvancedOptions(rhn, kslabel1, kslabel2):
     kslabel2              - label of second kickstart profile
     """
     try:
-        return rhn.session.kickstart.profile.compareAdvancedOptions(rhn.key,kslabel1, kslabel2)
-    except Exception, E:
-        return rhn.fail(E,'compare advanced opts between channels %s adn %s' % (kslabel1, kslabel2))
+        return rhn.session.kickstart.profile.compareAdvancedOptions(rhn.key, kslabel1, kslabel2)
+    except Exception as E:
+        return rhn.fail(E, 'compare advanced opts between channels %s adn %s' % (kslabel1, kslabel2))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -794,9 +823,10 @@ def comparePackages(rhn, kslabel1, kslabel2):
     kslabel2              - label of second kickstart profile
     """
     try:
-        return rhn.session.kickstart.profile.comparePackages(rhn.key,kslabel1, kslabel2)
-    except Exception, E:
-        return rhn.fail(E,'compare advanced opts between channels %s adn %s' % (kslabel1, kslabel2))
+        return rhn.session.kickstart.profile.comparePackages(rhn.key, kslabel1, kslabel2)
+    except Exception as E:
+        return rhn.fail(E, 'compare advanced opts between channels %s adn %s' % (kslabel1, kslabel2))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -828,8 +858,9 @@ def downloadKickstart(rhn, kslabel, sathost):
     """
     try:
         return rhn.session.kickstart.profile.downloadKickstart(rhn.key, kslabel, sathost)
-    except Exception, E:
-        return rhn.fail(E,'download kickstart %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'download kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -854,8 +885,9 @@ def downloadRenderedKickstart(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.downloadRenderedKickstart(rhn.key, kslabel)
-    except Exception, E:
-        return rhn.fail(E,'download kickstart %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'download kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -879,8 +911,9 @@ def getAdvancedOptions(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.getAdvancedOptions(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get advanced opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -904,8 +937,9 @@ def getChildChannels(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.getChildChannels(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get child channels for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -932,8 +966,9 @@ def getCustomOptions(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.getCustomOptions(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get custom opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -957,9 +992,10 @@ def getKickstartTree(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.getKickstartTree(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get ks tree for kickstart %s' % kslabel)
-        
+
+
 # ---------------------------------------------------------------------------- #
 
 def getVariables(rhn, kslabel):
@@ -982,8 +1018,9 @@ def getVariables(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.getVariables(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get custom variables for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1007,8 +1044,9 @@ def listIpRanges(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.listIpRanges(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get ip ranges for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1032,8 +1070,9 @@ def listScripts(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.listScripts(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list scripts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1058,8 +1097,9 @@ def removeIpRange(rhn, kslabel, ipaddress):
     """
     try:
         return rhn.session.kickstart.profile.removeIpRange(rhn.key, kslabel, ipaddress) == 1
-    except Exception, E:
-        return rhn.fail(E,'remove ip range containing %s from %s' %(ipaddress, kslabel))
+    except Exception as E:
+        return rhn.fail(E, 'remove ip range containing %s from %s' % (ipaddress, kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1084,8 +1124,9 @@ def removeScript(rhn, kslabel, scriptid):
     """
     try:
         return rhn.session.kickstart.profile.removeScript(rhn.key, kslabel, scriptid) == 1
-    except Exception, E:
-        return rhn.fail(E,'remove script id %d from kickstart %s' % (scriptid, kslabel))
+    except Exception as E:
+        return rhn.fail(E, 'remove script id %d from kickstart %s' % (scriptid, kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1132,8 +1173,9 @@ def setAdvancedOptions(rhn, kslabel, optionlist):
     """
     try:
         return rhn.session.kickstart.profile.setAdvancedOptions(rhn.key, kslabel, optionlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set advanced opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1158,8 +1200,9 @@ def setChildChannels(rhn, kslabel, chanlabels):
     """
     try:
         return rhn.session.kickstart.profile.setChildChannels(rhn.key, kslabel, chanlabels) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set one or more of child channels %s for kickstart %s' % (','.join(chanlabels), kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1186,8 +1229,9 @@ def setCustomOptions(rhn, kslabel, optslist):
     """
     try:
         return rhn.session.kickstart.profile.setCustomOptions(rhn.key, kslabel, optslist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set custom opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1212,10 +1256,11 @@ def setKickstartTree(rhn, kslabel, kstreelabel):
     """
     try:
         return rhn.session.kickstart.profile.setKickstartTree(rhn.key, kslabel, kstreelabel) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get ks tree for kickstart %s' % kslabel)
 
-def setLogging(rhn, kslabel, log_pre=True, log_post=True):       
+
+def setLogging(rhn, kslabel, log_pre=True, log_post=True):
     """
     API:
     kickstart.profile.setLogging
@@ -1238,8 +1283,9 @@ def setLogging(rhn, kslabel, log_pre=True, log_post=True):
     """
     try:
         return rhn.session.kickstart.profile.setLogging(rhn.key, kslabel, log_pre, log_post) == 1
-    except Exception, E:
-        return rhn.fail(E,'Enable logging for kickstart %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'Enable logging for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1264,8 +1310,9 @@ def setVariables(rhn, kslabel, varlist):
     """
     try:
         return rhn.session.kickstart.profile.setVariables(rhn.key, kslabel, varlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set custom variables for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1292,8 +1339,9 @@ def getActivationKeys(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.keys.getActivationKeys(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get activation keys for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1319,8 +1367,9 @@ def addActivationKey(rhn, kslabel, activationkey):
     """
     try:
         return rhn.session.kickstart.profile.keys.addActivationKey(rhn.key, kslabel, activationkey) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'add activation key %s to kickstart %s' % (activationkey, kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1346,8 +1395,9 @@ def removeActivationKey(rhn, kslabel, activationkey):
     """
     try:
         return rhn.session.kickstart.profile.keys.removeActivationKey(rhn.key, kslabel, activationkey) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'remove activation key %s from kickstart %s' % (activationkey, kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1375,8 +1425,9 @@ def getSoftwareList(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.software.getSoftwareList(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get custom opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1401,9 +1452,10 @@ def setSoftwareList(rhn, kslabel, swlist):
     """
     try:
         return rhn.session.kickstart.profile.software.setSoftwareList(rhn.key, kslabel, swlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set software list for kickstart %s' % kslabel)
-        
+
+
 # ---------------------------------------------------------------------------- #
 
 def appendToSoftwareList(rhn, kslabel, swlist):
@@ -1427,8 +1479,9 @@ def appendToSoftwareList(rhn, kslabel, swlist):
     """
     try:
         return rhn.session.kickstart.profile.software.appendToSoftwareList(rhn.key, kslabel, swlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'add packages to software list for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1475,9 +1528,10 @@ def addFilePreservations(rhn, kslabel, fplist):
     fplist(list/str)       - List of file preservation sets to add
     """
     try:
-        return rhn.session.kickstart.profile.system.addFilePreservations(rhn.key, kslabel,fplist) == 1
-    except Exception, E:
+        return rhn.session.kickstart.profile.system.addFilePreservations(rhn.key, kslabel, fplist) == 1
+    except Exception as E:
         return rhn.fail(E, 'set file preservation list %s for kickstart %s' % (','.join(fplist), kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1505,8 +1559,9 @@ def addCryptoKeys(rhn, kslabel, cryptokeys):
         cryptokeys = [cryptokeys]
     try:
         return rhn.session.kickstart.profile.system.addKeys(rhn.key, kslabel, cryptokeys) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'add GPG/SSL keys %s to kickstart %s' % (','.join(cryptokeys), kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1531,8 +1586,9 @@ def checkConfigManagement(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.checkConfigManagement(rhn.key, kslabel)
-    except Exception, E:
-        return rhn.fail(E,'check config management settings for %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'check config management settings for %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1557,8 +1613,9 @@ def checkRemoteCommands(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.checkRemoteCommands(rhn.key, kslabel)
-    except Exception, E:
-        return rhn.fail(E,'check if remote commands are enabled for kickstart %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'check if remote commands are enabled for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1582,8 +1639,9 @@ def disableConfigManagement(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.disableConfigManagement(rhn.key, kslabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'disable config management settings for %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'disable config management settings for %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1607,8 +1665,9 @@ def disableRemoteCommands(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.disableRemoteCommands(rhn.key, kslabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'disable remote commands for kickstart %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'disable remote commands for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1632,8 +1691,9 @@ def enableConfigManagement(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.enableConfigManagement(rhn.key, kslabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'enable config management settings for %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'enable config management settings for %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1657,8 +1717,9 @@ def enableRemoteCommands(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.enableRemoteCommands(rhn.key, kslabel) == 1
-    except Exception, E:
-        return rhn.fail(E,'enable remote commands for kickstart %s' % kslabel)
+    except Exception as E:
+        return rhn.fail(E, 'enable remote commands for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1682,8 +1743,9 @@ def getLocale(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.getLocale(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get locale info opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1707,8 +1769,9 @@ def getPartitioningScheme(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.getPartitioningScheme(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get custom opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1735,8 +1798,9 @@ def getRegistrationType(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.getRegistrationType(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get registration type for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1760,8 +1824,9 @@ def getSELinux(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.getSELinux(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get custom opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1786,8 +1851,9 @@ def listFilePreservations(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.listFilePreservations(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list file preservations lists for %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1811,8 +1877,9 @@ def listCryptoKeys(rhn, kslabel):
     """
     try:
         return rhn.session.kickstart.profile.system.listKeys(rhn.key, kslabel)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'List GPG/SSL keys for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1836,9 +1903,10 @@ def removeFilePreservations(rhn, kslabel, fplist):
     fplist(list/str)      - List of file preservation sets to remove
     """
     try:
-        return rhn.session.kickstart.profile.system.removeFilePreservations(rhn.key, kslabel,fplist) == 1
-    except Exception, E:
+        return rhn.session.kickstart.profile.system.removeFilePreservations(rhn.key, kslabel, fplist) == 1
+    except Exception as E:
         return rhn.fail(E, 'set file preservation list %s for kickstart %s' % (','.join(fplist), kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1867,12 +1935,13 @@ def removeCryptoKeys(rhn, kslabel, cryptokeys):
         cryptokeys = [cryptokeys]
     try:
         return rhn.session.kickstart.profile.system.removeKeys(rhn.key, kslabel, cryptokeys)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'remove keys %s from kickstart %s' % (','.join(cryptokeys), kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
-def setLocale(rhn, kslabel, locale, useUtc = False):
+def setLocale(rhn, kslabel, locale, useUtc=False):
     """
     API:
     kickstart.profile.system.setLocale
@@ -1894,8 +1963,9 @@ def setLocale(rhn, kslabel, locale, useUtc = False):
     """
     try:
         return rhn.session.kickstart.profile.system.setLocale(rhn.key, kslabel, locale, useUtc) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set locale info opts for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1920,8 +1990,9 @@ def setPartitioningScheme(rhn, kslabel, partcmdlist):
     """
     try:
         return rhn.session.kickstart.profile.system.setPartitioningScheme(rhn.key, kslabel, partcmdlist) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'set partitioning scheme for kickstart %s' % kslabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -1949,8 +2020,9 @@ def setRegistrationType(rhn, kslabel, regtype):
     """
     try:
         return rhn.session.kickstart.profile.system.setRegistrationType(rhn.key, kslabel, regtype) == 1
-    except Exception, E:
-        return rhn.fail(E, 'set registration type %s for kickstart %s' % (regtype,kslabel ))
+    except Exception as E:
+        return rhn.fail(E, 'set registration type %s for kickstart %s' % (regtype, kslabel))
+
 
 def setSELinux(rhn, kslabel, selinux_type):
     """
@@ -1973,8 +2045,9 @@ def setSELinux(rhn, kslabel, selinux_type):
     """
     try:
         return rhn.session.kickstart.profile.system.setSELinux(rhn.key, kslabel, selinux_type) == 1
-    except Exception, E:
-        return rhn.fail(E, 'set SELinux to %s  for kickstart %s' % (selinux_type,kslabel))
+    except Exception as E:
+        return rhn.fail(E, 'set SELinux to %s  for kickstart %s' % (selinux_type, kslabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2001,8 +2074,9 @@ def createOrUpdateSnippet(rhn, snippetname, contents):
     """
     try:
         return rhn.session.kickstart.snippet.createOrUpdate(rhn.key, snippetname, contents)
-    except Exception, E:
-        return rhn.fail(E,'create/update snippet %s' % snippetname)
+    except Exception as E:
+        return rhn.fail(E, 'create/update snippet %s' % snippetname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2026,8 +2100,9 @@ def deleteSnippet(rhn, snippetname):
     """
     try:
         return rhn.session.kickstart.snippet.delete(rhn.key, snippetname) == 1
-    except Exception, E:
-        return rhn.fail(E,'delete snippet %s' % snippetname)
+    except Exception as E:
+        return rhn.fail(E, 'delete snippet %s' % snippetname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2050,8 +2125,9 @@ def listAllSnippets(rhn):
     """
     try:
         return rhn.session.kickstart.snippet.listAll(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list all snippets')
+    except Exception as E:
+        return rhn.fail(E, 'list all snippets')
+
 
 def listCustomSnippets(rhn):
     """
@@ -2072,8 +2148,9 @@ def listCustomSnippets(rhn):
     """
     try:
         return rhn.session.kickstart.snippet.listCustom(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list custom snippets')
+    except Exception as E:
+        return rhn.fail(E, 'list custom snippets')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2096,8 +2173,9 @@ def listDefaultSnippets(rhn):
     """
     try:
         return rhn.session.kickstart.snippet.listDefault(rhn.key)
-    except Exception, E:
-        return rhn.fail(E,'list all default snippets')
+    except Exception as E:
+        return rhn.fail(E, 'list all default snippets')
+
 
 # ------------------------------ kickstart.tree ------------------------------ #
 
@@ -2125,9 +2203,10 @@ def createTree(rhn, treelabel, kstree_path, chanlabel, insttype):
     insttype                - Label for KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9). 
     """
     try:
-        return rhn.session.kickstart.tree.create(rhn.key,treelabel, kstree_path, chanlabel, insttype) == 1
-    except Exception, E:
+        return rhn.session.kickstart.tree.create(rhn.key, treelabel, kstree_path, chanlabel, insttype) == 1
+    except Exception as E:
         return rhn.fail(E, 'create new kickstart distribution %s' % treelabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2150,9 +2229,10 @@ def deleteTree(rhn, treelabel):
     treelabel(str)          - The new kickstart tree label.
     """
     try:
-        return rhn.session.kickstart.tree.delete(rhn.key,treelabel) == 1
-    except Exception, E:
+        return rhn.session.kickstart.tree.delete(rhn.key, treelabel) == 1
+    except Exception as E:
         return rhn.fail(E, 'delete kickstart distribution %s' % treelabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2175,9 +2255,10 @@ def getTreeDetails(rhn, treelabel):
     treelabel(str)          - The new kickstart tree label.
     """
     try:
-        return rhn.session.kickstart.tree.getDetails(rhn.key,treelabel)
-    except Exception, E:
+        return rhn.session.kickstart.tree.getDetails(rhn.key, treelabel)
+    except Exception as E:
         return rhn.fail(E, 'get details for kickstart distribution %s' % treelabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2200,9 +2281,10 @@ def listTrees(rhn, chanlabel):
     chanlabel(str)          - channel label
     """
     try:
-        return rhn.session.kickstart.tree.list(rhn.key,chanlabel)
-    except Exception, E:
+        return rhn.session.kickstart.tree.list(rhn.key, chanlabel)
+    except Exception as E:
         return rhn.fail(E, 'list kickstartable trees for channel %s' % chanlabel)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2227,8 +2309,9 @@ def listInstallTypes(rhn):
     """
     try:
         return rhn.session.kickstart.tree.listInstallTypes(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'List available install types')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2253,8 +2336,9 @@ def renameTree(rhn, treelabel, newlabel):
     """
     try:
         return rhn.session.kickstart.tree.rename(rhn.key, treelabel, newlabel) == 1
-    except Exception, E:
-        return rhn.fail(E, 'rename tree %s to %s' %(treelabel, newlabel))
+    except Exception as E:
+        return rhn.fail(E, 'rename tree %s to %s' % (treelabel, newlabel))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -2282,9 +2366,9 @@ def updateTree(rhn, treelabel, treepath, chanlabel, insttype):
     insttype                - Label for KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9). 
     """
     try:
-        return rhn.session.kickstart.tree.update(rhn.key,treelabel, treepath, chanlabel, insttype) == 1
-    except Exception, E:
+        return rhn.session.kickstart.tree.update(rhn.key, treelabel, treepath, chanlabel, insttype) == 1
+    except Exception as E:
         return rhn.fail(E, 'update kickstart distribution %s' % treelabel)
-        
+
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

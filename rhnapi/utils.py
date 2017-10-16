@@ -40,7 +40,7 @@ except ImportError:
 
 from operator import itemgetter
 import time
-from xmlrpclib import DateTime as xmlrpcDateTime
+from xmlrpc.client import DateTime as xmlrpcDateTime
 import csv
 import sys
 
@@ -48,87 +48,90 @@ import sys
 from rhnapi.satellite import listEntitlements
 from rhnapi.system import listSystems, getBaseChannel
 
+
 # --------------------------------------------------------------------------------- #
 
 def showEntitlements(rhn):
-	"""
+    """
     usage:
     showEntitlements(rhn)
 
     description:
-	print a summary of the entitlement usage on a satellite.
+    print a summary of the entitlement usage on a satellite.
 
     returns:
     text output to stdout
 
-	params:
-	rhn                    - an authenticated rhn session
-	"""
-	try:
-		satents =  listEntitlements(rhn)
-		# deal with system entitlements first
-		# title line:
-		print "%-45s %6s %6s %6s" %('System Entitlement','used','free','total')
-		print "%s %s %s %s" %('=' * 45,'=' * 6,'=' * 6,'=' * 6)
+    params:
+    rhn                    - an authenticated rhn session
+    """
+    try:
+        satents = listEntitlements(rhn)
+        # deal with system entitlements first
+        # title line:
+        print("%-45s %6s %6s %6s" % ('System Entitlement', 'used', 'free', 'total'))
+        print("%s %s %s %s" % ('=' * 45, '=' * 6, '=' * 6, '=' * 6))
 
-		# cycle through the system entitlements
-		for ent in sorted(satents['system'], key = itemgetter('name')):
-			print "%-45s %6d %6d %6d" %(ent['name'], ent['used_slots'], ent['free_slots'], ent['total_slots'])
-		# separator
-		print "\n\n"
+        # cycle through the system entitlements
+        for ent in sorted(satents['system'], key=itemgetter('name')):
+            print("%-45s %6d %6d %6d" % (ent['name'], ent['used_slots'], ent['free_slots'], ent['total_slots']))
+        # separator
+        print("\n\n")
 
-		# title
-		print "%-45s %6s %6s %6s" %('Software Channel Entitlement','used','free','total')
-		print "%s %s %s %s" %('=' * 45,'=' * 6,'=' * 6,'=' * 6)
+        # title
+        print("%-45s %6s %6s %6s" % ('Software Channel Entitlement', 'used', 'free', 'total'))
+        print("%s %s %s %s" % ('=' * 45, '=' * 6, '=' * 6, '=' * 6))
 
-		# now show channels to which the client has entitlements
-		validchans = [ x for x in satents['channel'] if x['total_slots'] != 0 ]
+        # now show channels to which the client has entitlements
+        validchans = [x for x in satents['channel'] if x['total_slots'] != 0]
 
-		for ent in sorted(validchans, key = itemgetter('label')):
-			print "%-45s %6d %6d %6d" %(ent['label'], ent['used_slots'], ent['free_slots'], ent['total_slots'])
+        for ent in sorted(validchans, key=itemgetter('label')):
+            print("%-45s %6d %6d %6d" % (ent['label'], ent['used_slots'], ent['free_slots'], ent['total_slots']))
 
-	except Exception, E:
-		return rhn.fail(E, 'list entitlement usage on satellite %s' % rhn.hostname)
-        
+    except Exception as E:
+        return rhn.fail(E, 'list entitlement usage on satellite %s' % rhn.hostname)
+
+
 # --------------------------------------------------------------------------------- #
 
 def showChannelUsage(rhn):
-	"""
+    """
     usage:
     showChannelUsage(rhn)
 
     description:
-	pull system list from RHN/Satellite, look up base channels 
-	count of systems subscribed to each.
-	This can take a long time!
+    pull system list from RHN/Satellite, look up base channels
+    count of systems subscribed to each.
+    This can take a long time!
 
     returns:
     text to stdout
 
     parameters:
-	rhn - an authenticated RHN session
-	"""
-	# from rhnapi.channel import getEntitlements
-	try:
-		syslist = listSystems(rhn)
-		systemcount = len(syslist)
-		chanusage = {}
-		for s in syslist:
-			id = int(s["id"])
-			basechan = getBaseChannel(rhn, id)
-			if chanusage.has_key(basechan):
-				chanusage[basechan] += 1
-			else:
-				chanusage[basechan] = 1
-		print "count\tchannel label"
-		print "=====\t============="
-		for k in chanusage.keys():
-			print "%d\t%s" %( chanusage[k], k )
-		print "-----------------------"
-		print 'system count: %d' % len(syslist)
-	except Exception, E:
-		return rhn.fail(E, "list channel subscriptions and usage" )
-        
+    rhn - an authenticated RHN session
+    """
+    # from rhnapi.channel import getEntitlements
+    try:
+        syslist = listSystems(rhn)
+        systemcount = len(syslist)
+        chanusage = {}
+        for s in syslist:
+            id = int(s["id"])
+            basechan = getBaseChannel(rhn, id)
+            if basechan in chanusage:
+                chanusage[basechan] += 1
+            else:
+                chanusage[basechan] = 1
+        print("count\tchannel label")
+        print("=====\t=============")
+        for k in list(chanusage.keys()):
+            print("%d\t%s" % (chanusage[k], k))
+        print("-----------------------")
+        print('system count: %d' % len(syslist))
+    except Exception as E:
+        return rhn.fail(E, "list channel subscriptions and usage")
+
+
 # --------------------------------------------------------------------------------- #
 
 class RhnJSONEncoder(json.JSONEncoder):
@@ -144,6 +147,7 @@ class RhnJSONEncoder(json.JSONEncoder):
 
     * python sets                : converted to lists - list(obj)
     """
+
     def default(self, obj):
         """
         xmlrpclib.DateTime is non-serializable, but its 'value' is a unicode str, so...
@@ -155,10 +159,11 @@ class RhnJSONEncoder(json.JSONEncoder):
             return list(obj)
 
         return json.JSONEncoder.default(self, obj)
-        
+
+
 # --------------------------------------------------------------------------------- #
 
-def dumpJSON(obj, outputfile, indent = 2, verbose = False, customenc = RhnJSONEncoder):
+def dumpJSON(obj, outputfile, indent=2, verbose=False, customenc=RhnJSONEncoder):
     """
     Serialises the chosen object as JSON.
     
@@ -177,23 +182,24 @@ def dumpJSON(obj, outputfile, indent = 2, verbose = False, customenc = RhnJSONEn
     try:
         fd = open(outputfile, 'wb')
         try:
-            data = json.dumps(obj, indent = indent, cls = customenc)
+            data = json.dumps(obj, indent=indent, cls=customenc)
         except:
             if verbose:
-                print "could not serialise object"
+                print("could not serialise object")
             return False
         fd.write(data)
         fd.close()
         return True
-    except IOError, E:
+    except IOError as E:
         if verbose:
-            print "Could not open file %s for writing. Check permissions"
-            print E.strerror
+            print("Could not open file %s for writing. Check permissions")
+            print(E.strerror)
         return False
-        
+
+
 # --------------------------------------------------------------------------------- #
 
-def loadJSON(inputfile, verbose = False, logger = None):
+def loadJSON(inputfile, verbose=False, logger=None):
     """
     Loads data from a JSON file (probably but not necessarily 
     exported with dumpJSON above) and returns it.
@@ -208,30 +214,32 @@ def loadJSON(inputfile, verbose = False, logger = None):
         try:
             jsondata = json.loads(data)
             return jsondata
-        except ValueError, E:
+        except ValueError as E:
             if logger is not None:
                 logger.warn("ERROR: exception raised, '%s'" % E.__str__())
                 logger.exception("could not read in data from %s" % inputfile)
-    except IOError, E:
+    except IOError as E:
         if logger is not None:
             logger.warn(E.__str__())
             logger.exception("could not open file %s for reading. Check permissions?" % inputfile)
         return None
-        
+
+
 # --------------------------------------------------------------------------------- #
 
 def promptMissing(promptstr):
     """
     prompt for a missing element
     """
-    return str(raw_input(promptstr))
+    return str(input(promptstr))
+
 
 # --------------------------------------------------------------------------------- #
 def promptConfirm(action, default='Y'):
     """
     prompt for a yes/no answer to an action
     """
-    ans = raw_input('Really %s (y/n) [%s]? ' %(action, default))
+    ans = input('Really %s (y/n) [%s]? ' % (action, default))
     # if we type in the default answer, then return True
     if str(ans).lower() == default.lower():
         return True
@@ -242,8 +250,9 @@ def promptConfirm(action, default='Y'):
     else:
         return False
 
+
 # --------------------------------------------------------------------------------- #
-def csvReport(objectlist, outputfile,  fields = None):
+def csvReport(objectlist, outputfile, fields=None):
     """
     Creates a CSV report, with a header line from the data provided
     This uses the python stdlib csv.DictWriter class, where each line is constructed from
@@ -273,28 +282,29 @@ def csvReport(objectlist, outputfile,  fields = None):
         if fields is None:
             # assume we want all the possible fields in the input dict
             # and that all entries match the first one.
-            fields = objectlist[0].keys()
+            fields = list(objectlist[0].keys())
 
         headerline = {}
         # generate a header line
         for f in fields:
             headerline[f] = f
-        
-        mywriter = csv.DictWriter(fd, fields, restval='', extrasaction = 'ignore')
+
+        mywriter = csv.DictWriter(fd, fields, restval='', extrasaction='ignore')
         mywriter.writerow(headerline)
         mywriter.writerows(objectlist)
 
         try:
-            print "------------------------"
+            print("------------------------")
             if not fd.isatty():
                 fd.close()
         except ValueError:
             pass
-        
+
         return True
 
     except:
         raise
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -315,11 +325,11 @@ def getMaxLen(dictlist):
     """
     maxlen = {}
     for d in dictlist:
-        for k, v in d.iteritems():
+        for k, v in d.items():
             curval = maxlen.get(k, 0)
             try:
                 mylen = len(v)
-# for objects that don't support len():
+            # for objects that don't support len():
             except:
                 mylen = len(str(v))
 
@@ -327,6 +337,7 @@ def getMaxLen(dictlist):
                 maxlen[k] = mylen
 
     return maxlen
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -343,7 +354,7 @@ def get_pkgstr(pkgobj):
         string:  E:NVR.A or NVR.A, depending on the presence of an epoch
     """
     # this bit is always the same
-    keys = [ "%(name)s-%(version)s-%(release)s" ]
+    keys = ["%(name)s-%(version)s-%(release)s"]
     # arch or arch_label? (thanks, RHN!)
     if pkgobj.get('arch_label', False):
         keys.append(".%(arch_label)s")
@@ -355,6 +366,7 @@ def get_pkgstr(pkgobj):
         keys.insert(0, "%(epoch)s:")
 
     return ''.join(keys) % pkgobj
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -371,6 +383,7 @@ def get_errid(errobj):
     """
     return errobj.get('advisory').split('-')[1]
 
+
 # ---------------------------------------------------------------------------- #
 
 def index_dictlist(dictlist, keyfunc):
@@ -386,9 +399,10 @@ def index_dictlist(dictlist, keyfunc):
             must take a dict as an argument.
     """
     try:
-        return dict( zip ((keyfunc(entry) for entry in dictlist), dictlist))
+        return dict(list(zip((keyfunc(entry) for entry in dictlist), dictlist)))
     except:
         return None
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -420,8 +434,7 @@ def batch_iterate(iterable, batchsize):
 
     it = iter(iterable)
     while True:
-       yield tuple(itertools.islice(it, batchsize)) or it.next()
-
+        yield tuple(itertools.islice(it, batchsize)) or next(it)
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

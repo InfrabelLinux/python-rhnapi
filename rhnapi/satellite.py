@@ -30,18 +30,19 @@ Updated for satellite 5.4.
 
 __author__ = "Stuart Sears"
 
+
 def listEntitlements(rhn):
-	"""
+    """
     API:
     satellite.listEntitlements
 
-	Usage:
+    Usage:
     listEntitlements(rhn)
-	
-    description:
-	Lists the available entitlements on a satellite server.
 
-	Returns:
+    description:
+    Lists the available entitlements on a satellite server.
+
+    Returns:
     2x dict, system and channel
         { 'system' : [
             {'free_slots': 2657,
@@ -62,40 +63,42 @@ def listEntitlements(rhn):
             ]
         }
 
-	parameters:
-	rhn                     - an authenticated RHN session.
-	"""
-	try:
-		return rhn.session.satellite.listEntitlements(rhn.key)
-	except Exception, E:
-		return rhn.fail(E, 'list entitlements on RHN server %s' % rhn.hostname)
+    parameters:
+    rhn                     - an authenticated RHN session.
+    """
+    try:
+        return rhn.session.satellite.listEntitlements(rhn.key)
+    except Exception as E:
+        return rhn.fail(E, 'list entitlements on RHN server %s' % rhn.hostname)
+
 
 # ---------------------------------------------------------------------------- #
 
 def listProxies(rhn):
-	"""
+    """
     API:
     satellite.listProxies
 
-	Usage:
+    Usage:
     listProxies(rhn)
-	
-    description:
-	Lists the available entitlements on a satellite server.
 
-	Returns:
+    description:
+    Lists the available entitlements on a satellite server.
+
+    Returns:
     list of dict, one per system that is an activated proxy
             {'id': int (system id),
              'last_checkin': <DateTime '20110309T14:04:56' at 308d2d8>,
              'name': 'system name'}]
 
-	parameters:
-	rhn                     - an authenticated RHN session.
-	"""
-	try:
-		return rhn.session.satellite.listProxies(rhn.key)
-	except Exception, E:
-		return rhn.fail(E, 'list proxies registered with RHN server %s' % rhn.hostname)
+    parameters:
+    rhn                     - an authenticated RHN session.
+    """
+    try:
+        return rhn.session.satellite.listProxies(rhn.key)
+    except Exception as E:
+        return rhn.fail(E, 'list proxies registered with RHN server %s' % rhn.hostname)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -120,7 +123,7 @@ def getCertificateExpirationDate(rhn):
     """
     try:
         return rhn.session.satellite.getCertificateExpirationDate(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'get cert expiry date for satellite %s' % rhn.hostname)
 
 # footer - do not edit below here

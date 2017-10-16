@@ -33,6 +33,7 @@ addAdmins/removeAdmins -> special case of addOrRemoveAdmins
 
 __author__ = "Stuart Sears"
 
+
 # ---------------------------------------------------------------------------- #
 
 def addOrRemoveAdmins(rhn, sysgroup, adminlist, action):
@@ -64,8 +65,9 @@ def addOrRemoveAdmins(rhn, sysgroup, adminlist, action):
         task = "ERROR: no action defined"
     try:
         return rhn.session.systemgroup.addOrRemoveAdmins(rhn.key, sysgroup, adminlist, action) == 1
-    except Exception, E:
-        return rhn.fail(E, '%s one or more of %s as admin(s) of group %s' %( task, ','.join(adminlist), sysgroup))
+    except Exception as E:
+        return rhn.fail(E, '%s one or more of %s as admin(s) of group %s' % (task, ','.join(adminlist), sysgroup))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -89,7 +91,8 @@ def addAdmins(rhn, sysgroup, adminlist):
     adminlist(list/str)     - a list of RHN logins
     """
     return addOrRemoveAdmins(rhn, sysgroup, adminlist, 1)
-    
+
+
 # ---------------------------------------------------------------------------- #
 
 def addAdmin(rhn, sysgroup, adminlogin):
@@ -113,6 +116,7 @@ def addAdmin(rhn, sysgroup, adminlogin):
     """
     return addOrRemoveAdmins(rhn, sysgroup, [adminlogin], 1)
 
+
 # ---------------------------------------------------------------------------- #
 
 def removeAdmins(rhn, sysgroup, adminlist):
@@ -134,6 +138,7 @@ def removeAdmins(rhn, sysgroup, adminlist):
     """
     return addOrRemoveAdmins(rhn, sysgroup, adminlist, 0)
 
+
 # ---------------------------------------------------------------------------- #
 
 def removeAdmin(rhn, sysgroup, adminlogin):
@@ -154,6 +159,7 @@ def removeAdmin(rhn, sysgroup, adminlogin):
     adminlogin(str)         - a single RHN login
     """
     return addOrRemoveAdmins(rhn, sysgroup, [adminlogin], 0)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -182,8 +188,9 @@ def addOrRemoveSystems(rhn, sysgroup, serverids, add=True):
         task = "remove"
     try:
         return rhn.session.systemgroup.addOrRemoveSystems(rhn.key, sysgroup, serverids, add) == 1
-    except Exception, E:
-        return rhn.fail(E, '%s one or more of %s as members of group %s' %(task, ','.join(serverids), sysgroup))
+    except Exception as E:
+        return rhn.fail(E, '%s one or more of %s as members of group %s' % (task, ','.join(serverids), sysgroup))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -208,6 +215,7 @@ def addSystems(rhn, sysgroup, serverids):
     """
     return addOrRemoveSystems(rhn, sysgroup, serverids, 1)
 
+
 # ---------------------------------------------------------------------------- #
 
 def addSystem(rhn, sysgroup, serverid):
@@ -230,6 +238,7 @@ def addSystem(rhn, sysgroup, serverid):
     serverid(int)           - an individual system ID
     """
     return addOrRemoveSystems(rhn, sysgroup, [serverid], 1)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -254,6 +263,7 @@ def removeSystems(rhn, sysgroup, serverids):
     """
     return addOrRemoveSystems(rhn, sysgroup, serverids, 0)
 
+
 # ---------------------------------------------------------------------------- #
 
 def removeSystem(rhn, sysgroup, serverid):
@@ -275,6 +285,7 @@ def removeSystem(rhn, sysgroup, serverid):
     serverid(int)           - and individual system ID
     """
     return addOrRemoveSystems(rhn, sysgroup, [serverid], 0)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -304,8 +315,9 @@ def create(rhn, sysgroup, sysdesc):
     """
     try:
         return rhn.session.systemgroup.create(rhn.key, sysgroup, sysdesc)
-    except Exception, E:
-        return rhn.fail(E, 'create system group %s' %( sysgroup ))
+    except Exception as E:
+        return rhn.fail(E, 'create system group %s' % (sysgroup))
+
 
 def delete(rhn, sysgroup):
     """
@@ -325,8 +337,9 @@ def delete(rhn, sysgroup):
     """
     try:
         return rhn.session.systemgroup.delete(rhn.key, sysgroup) == 1
-    except Exception, E:
-        return rhn.fail(E, 'delete system group %s' %( sysgroup))
+    except Exception as E:
+        return rhn.fail(E, 'delete system group %s' % (sysgroup))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -358,10 +371,11 @@ def getDetails(rhn, groupspec):
     """
     try:
         return rhn.session.systemgroup.getDetails(rhn.key, groupspec)
-    except Exception, E:
+    except Exception as E:
         ID = str(groupspec)
-        return rhn.fail(E, 'retrieve information about group %s' % ID )
-    
+        return rhn.fail(E, 'retrieve information about group %s' % ID)
+
+
 # ---------------------------------------------------------------------------- #
 
 def listActiveSystemsInGroup(rhn, sysgroup):
@@ -384,9 +398,10 @@ def listActiveSystemsInGroup(rhn, sysgroup):
     """
     try:
         return rhn.session.systemgroup.listActiveSystemsInGroup(rhn.key, sysgroup)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list active systems in group %s' % sysgroup)
-        
+
+
 # ---------------------------------------------------------------------------- #
 
 def listAdministrators(rhn, sysgroup):
@@ -415,8 +430,9 @@ def listAdministrators(rhn, sysgroup):
     """
     try:
         return rhn.session.systemgroup.listAdministrators(rhn.key, sysgroup)
-    except Exception, E:
-        return rhn.fail(E, 'list administrators of group %s' %( sysgroup))
+    except Exception as E:
+        return rhn.fail(E, 'list administrators of group %s' % (sysgroup))
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -446,8 +462,9 @@ def listAllGroups(rhn):
     """
     try:
         return rhn.session.systemgroup.listAllGroups(rhn.key)
-    except Exception, E:
+    except Exception as E:
         rhn.fail(E, 'Failed to list system groups')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -478,8 +495,9 @@ def listGroupsWithNoAssociatedAdmins(rhn):
     """
     try:
         return rhn.session.systemgroup.listGroupsWithNoAssociatedAdmins(rhn.key)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list systems groups with no admin users')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -489,9 +507,10 @@ def listGroupsWithoutAdmins(rhn):
     """
     return listGroupsWithNoAssociatedAdmins(rhn)
 
+
 # ---------------------------------------------------------------------------- #
-    
-def listInactiveSystemsInGroup(rhn, sysgroup, days = 1):
+
+def listInactiveSystemsInGroup(rhn, sysgroup, days=1):
     """
     API:
     systemgroup.listInactiveSystemsInGroup
@@ -513,8 +532,9 @@ def listInactiveSystemsInGroup(rhn, sysgroup, days = 1):
     """
     try:
         return rhn.session.systemgroup.listInactiveSystemsInGroup(rhn.key, sysgroup, days)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list inactive systems in group %s' % sysgroup)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -558,12 +578,13 @@ def listSystems(rhn, sysgroup):
     """
     try:
         return rhn.session.systemgroup.listSystems(rhn.key, sysgroup)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list systems in group %s' % sysgroup)
+
 
 # ---------------------------------------------------------------------------- #
 
-def scheduleApplyErrataToActive(rhn, sysgroup, errlist, runafter = None ):
+def scheduleApplyErrataToActive(rhn, sysgroup, errlist, runafter=None):
     """
     API:
     systemgroup.scheduleApplyErrataToActive
@@ -589,11 +610,12 @@ def scheduleApplyErrataToActive(rhn, sysgroup, errlist, runafter = None ):
             return rhn.session.systemgroup.scheduleApplyErrataToActive(rhn.key, sysgroup, errlist, runafter) == 1
         else:
             return rhn.session.systemgroup.scheduleApplyErrataToActive(rhn.key, sysgroup, errlist, runafter) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'schedule errata [%s] on active systems in group %s' % (','.join(errlist), sysgroup))
 
+
 # ---------------------------------------------------------------------------- #
-    
+
 def update(rhn, sysgroup, grpdesc):
     """
     API:
@@ -622,8 +644,8 @@ def update(rhn, sysgroup, grpdesc):
     """
     try:
         return rhn.session.systemgroup.update(rhn.key, sysgroup, grpdesc)
-    except Exception, E:
-        return rhn.fail(E, 'update system group %s' % sysgroup )
+    except Exception as E:
+        return rhn.fail(E, 'update system group %s' % sysgroup)
 
 # footer - do not edit below here
 # vim: set et ai smartindent ts=4 sts=4 sw=4 ft=python:

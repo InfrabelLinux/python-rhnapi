@@ -61,34 +61,36 @@ I'm sure there's a better way to manage this. Raise a proper exception, I suppos
 __author__ = "Stuart Sears"
 
 # the following controls what is imported when you do a 'from rhnapi import *'
-__all__ =     [
-            'activationkey',
-            'api',
-            'channel',
-            'configchannel',
-            'distchannel',
-            'errata',
-            'kickstart',
-            'org',
-            'packages',
-            'preferences',
-            'proxy',
-            'satellite',
-            'schedule',
-            'system',
-            'systemgroup',
-            'user',
-            'utils',
-            ]
+__all__ = [
+    'activationkey',
+    'api',
+    'channel',
+    'configchannel',
+    'distchannel',
+    'errata',
+    'kickstart',
+    'org',
+    'packages',
+    'preferences',
+    'proxy',
+    'satellite',
+    'schedule',
+    'system',
+    'systemgroup',
+    'user',
+    'utils',
+]
 
-import xmlrpclib
-import httplib
+import xmlrpc.client
+import http.client
 import sys
 import re
 import os
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 import time
 import logging
+import ssl
+
 
 # these methods could all be part of the main class, but don't need to be:
 # besides, who knows if I'll need them somewhere else in the future?
@@ -107,6 +109,7 @@ def getHostname(url):
     # add  the correct start and end bits:
     return hostname
 
+
 # ---------------------------------------------------------------------------- #
 
 def rhnifyURL(url):
@@ -121,14 +124,16 @@ def rhnifyURL(url):
     # add  the correct start and end bits:
     return 'https://%s/rpc/api' % hostname
 
+
 # ---------------------------------------------------------------------------- #
 
 def promptUser():
     """
     prompts for username.
     """
-    rhnuser = str(raw_input('Please enter your RHN username: ')).strip()
+    rhnuser = str(input('Please enter your RHN username: ')).strip()
     return rhnuser
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -141,6 +146,7 @@ def promptPass(username):
     from getpass import getpass
     rhnpass = getpass('Please enter the RHN password for user %s: ' % username)
     return rhnpass.strip()
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -185,9 +191,9 @@ def fetchCreds(filename, servername, logger=None, debug=False):
         confparse.read(srcfile)
         if confparse.has_section(servername):
             if logger:
-               logger.debug("found section for server %s", servername)
+                logger.debug("found section for server %s", servername)
             mylogin = confparse.get(servername, 'login')
-            mypass  = confparse.get(servername, 'password')
+            mypass = confparse.get(servername, 'password')
         else:
             if logger:
                 logger.info("No section found for server %s, using defaults", servername)
@@ -196,9 +202,10 @@ def fetchCreds(filename, servername, logger=None, debug=False):
 
     return str(mylogin).strip(), str(mypass).strip()
 
+
 # ---------------------------------------------------------------------------- #
 
-def saveCreds(filename, servername, logger = None, login = None, password = None):
+def saveCreds(filename, servername, logger=None, login=None, password=None):
     """
     description:
     Attempts to save login and password information to the given configfile
@@ -225,11 +232,11 @@ def saveCreds(filename, servername, logger = None, login = None, password = None
     # handle being given '~/' as part of a filename
     dstfile = os.path.expanduser(filename)
     if logger:
-        logger.debug("saving credentials to %s", dstfile) 
+        logger.debug("saving credentials to %s", dstfile)
 
-    # existing defaults will replace these, but just in case we're setting
+        # existing defaults will replace these, but just in case we're setting
     # up a new config file from scratch...
-    confparse = SafeConfigParser({'login' : None, 'password' : None})
+    confparse = SafeConfigParser({'login': None, 'password': None})
 
     # if the file already exists, read its contents into a configparser object:
 
@@ -242,7 +249,7 @@ def saveCreds(filename, servername, logger = None, login = None, password = None
     except IOError:
         if logger:
             logger.exception("unable to open file %s for writing", dstfile)
-        
+
     # add a section for our hostname, if missing
     if not confparse.has_section(servername):
         if logger:
@@ -263,19 +270,22 @@ def saveCreds(filename, servername, logger = None, login = None, password = None
         return True
     except:
         if logger:
-            logger.log(logging.ERROR, "Failed to save configuration information", exc_info = 1)
+            logger.log(logging.ERROR, "Failed to save configuration information", exc_info=1)
         return False
-    
+
+
 # -------------------------- Class Definitions     --------------------------- #
 
-class proxiedTransport(xmlrpclib.SafeTransport):
+class proxiedTransport(xmlrpc.client.SafeTransport):
     """
     A class representing a custom transport for XMLPRC transactions via a proxy
     totally stolen from the python 2.7 docs at http://docs.python.org/library/xmlrpclib.html
     Adapted to use HTTPS...
     """
+
     def set_proxy(self, proxy):
         self.proxy = proxy
+
     # ---------------------------------------------------------------------------- #
 
     def make_connection(self, host):
@@ -283,8 +293,9 @@ class proxiedTransport(xmlrpclib.SafeTransport):
         used to use httplib.HTTPS, but the proxy is a plain HTTP connection, I think.
         """
         self.realhost = host
-        h = httplib.HTTP(self.proxy)
+        h = http.client.HTTP(self.proxy)
         return h
+
     # ---------------------------------------------------------------------------- #
 
     def send_request(self, connection, handler, request_body):
@@ -297,22 +308,24 @@ class proxiedTransport(xmlrpclib.SafeTransport):
         handler: /rpc/api in this case
         """
         connection.putrequest("POST", 'https://%s%s' % (self.realhost, handler))
+
     # ---------------------------------------------------------------------------- #
 
     def send_host(self, connection, host):
         connection.putheader('Host', self.realhost)
 
+
 # ---------------------------------------------------------------------------- #
 
 class rhnSession(object):
-
     """
     a base RHN class. You'll need one of the other submodules for it to do anything useful.
     """
 
-    def __init__(self, url='rhn.redhat.com', rhnlogin = None, rhnpassword = None,
-                 proxyserver = None, config = None, savecreds=False, debug = False,
-                 logenable = True, logfile = None, loglevel = 20, logname = 'RHN API'):
+    def __init__(self, url='rhn.redhat.com', rhnlogin=None, rhnpassword=None,
+                 proxyserver=None, config=None, savecreds=False, debug=False,
+                 logenable=True, logfile=None, loglevel=20, logname='RHN API',
+                 ssl_verify=True):
         """
         Initialize a connection to RHN (or a satellite) using the provided information.
         proxy server should be local https proxy, if available. IPaddress/Hostname:port.
@@ -335,6 +348,7 @@ class rhnSession(object):
                               (10 = debug, 20 = info, 30 = warn, 40 = error, 50 = crit/fatal)
         *logname(str)       - name to use in log messages. Defaults to 'RHN API'. Can be any string.                              
                               (for example, your script name)
+        *ssl_verify(bool)   - verify SSL connections
         """
         # for config passing we require the hostname, let's clean up whatever we've been given:
         self.hostname = getHostname(url)
@@ -354,7 +368,7 @@ class rhnSession(object):
         self.logfile = logfile
         if self.debug:
             self.loglevel = 10
-        else:            
+        else:
             self.loglevel = loglevel
 
         if self.logenable:
@@ -368,7 +382,7 @@ class rhnSession(object):
         # 2. login and password from config file
         # 3. prompt for missing information
         # If login and/or password are specified explicitly they override the config file
-        if self.login == None and self._password == None and self.configfile != None:
+        if not self.login and not self._password and self.configfile:
             self.logInfo("looking up config info in %s" % self.configfile)
             self.login, self._password = fetchCreds(self.configfile, self.hostname, self.logger, self.debug)
 
@@ -379,6 +393,10 @@ class rhnSession(object):
         if str(self._password) == 'None':
             self._password = promptPass(self.login)
 
+        ssl_context = ssl.create_default_context()
+        if not ssl_verify:
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
 
         try:
             if proxyserver is not None:
@@ -386,9 +404,9 @@ class rhnSession(object):
                 P.set_proxy(proxyserver)
 
                 # basic session initialisation
-                self.session = xmlrpclib.Server(self.rhnurl, verbose=0, transport = P)
+                self.session = xmlrpc.client.ServerProxy(self.rhnurl, verbose=0, transport=P, context=ssl_context)
             else:
-                self.session = xmlrpclib.Server(self.rhnurl, verbose=0)
+                self.session = xmlrpc.client.ServerProxy(self.rhnurl, verbose=0, context=ssl_context)
 
             # now we login
             self.key = self.session.auth.login(self.login, self._password)
@@ -409,19 +427,16 @@ class rhnSession(object):
                     else:
                         self.logWarn("failed to save credentials to %s" % self.configfile)
 
-            
+        except xmlrpc.client.Fault as E:
+            self.fail(E, 'login to RHN server %s' % self.rhnurl)
+            raise E
 
-
-        except xmlrpclib.Fault, E:
-            self.fail(E, 'login to RHN server %s' % self.rhnurl )
-            raise
-
-# ---------------------------------------------------------------------------- #
+        # ---------------------------------------------------------------------------- #
 
     # def addLogger(self, logname, logdest, loglevel, logfmt = '%(asctime)s - %(name)s - %(levelname)-8s - %(message)s'):
-    def addLogger(self, logname, logdest, loglevel, 
-            logfmt = '%(asctime)s %(name)s[%(process)d]: %(levelname)-8s - %(message)s',
-            datefmt = '%b %e %H:%M:%S'):
+    def addLogger(self, logname, logdest, loglevel,
+                  logfmt='%(asctime)s %(name)s[%(process)d]: %(levelname)-8s - %(message)s',
+                  datefmt='%b %e %H:%M:%S'):
         """
         Generates self.logger, a logging.Logger instance.
 
@@ -461,8 +476,8 @@ class rhnSession(object):
         # block to use the 'finally' statement for cleanup.
         try:
             if logdest is not None:
-            # we were actually given a filename or path to log to
-            # try and open it
+                # we were actually given a filename or path to log to
+                # try and open it
                 try:
                     lh = logging.FileHandler(logdest)
                     logerror = False
@@ -474,8 +489,8 @@ class rhnSession(object):
                 lh = logging.StreamHandler()
                 logerror = False
         finally:
-        # this should run once the outer 'try' block has completed
-        # whether an exception was raised or not.
+            # this should run once the outer 'try' block has completed
+            # whether an exception was raised or not.
             lh.setFormatter(formatter)
             lh.setLevel(loglevel)
             if len(self.logger.handlers) == 0:
@@ -485,8 +500,8 @@ class rhnSession(object):
             if self.logger is None:
                 raise RuntimeError("failed to instantiate logger")
             self.logger.debug("Logger initiated")
-        
-    def setLogLevel(self, loglevel = 10):
+
+    def setLogLevel(self, loglevel=10):
         """
         sets loglevel for the RHN logger
         """
@@ -507,7 +522,7 @@ class rhnSession(object):
         """
         if self.logger is not None:
             self.logger.log(loglevel, message)
-    
+
     def logInfo(self, message):
         """
         logs at INFO priority
@@ -555,7 +570,7 @@ class rhnSession(object):
         Special case of logMessage for debug logs
         """
         return self.logMessage(logging.DEBUG, message)
-            
+
     def logInfo(self, message):
         """
         Special case of logMessage for debug logs
@@ -589,10 +604,10 @@ class rhnSession(object):
         try:
             self.logErr("Failed to %s" % message)
             raise exptn
-        except xmlrpclib.Fault, E:
+        except xmlrpc.client.Fault as E:
             self.logErr(str(exptn.faultCode).strip())
             self.logErr(str(exptn.faultString).strip())
-        except Exception, E:
+        except Exception as E:
             self.logErr(str(E))
         # raise
         return False
@@ -603,7 +618,7 @@ class rhnSession(object):
         """
         try:
             self.session.auth.logout(self.key)
-        except Exception, E:
+        except Exception as E:
             self.fail(E, 'logout user %s' % self.login)
 
     def getSatelliteVersion(self):
@@ -640,7 +655,7 @@ class rhnSession(object):
         # go back to Info Logging
         if self.logger is not None:
             self.logger.setLevel(logging.WARN)
-            
+
     def enableVerbose(self):
         """
         Verbose Logging
@@ -672,10 +687,10 @@ class rhnSession(object):
             res = self.session.auth.logout(self.key)
             if res == 1:
                 return True
-        except Exception, E:
+        except Exception as E:
             return self.fail(E, '%s logout failed!' % self.login)
 
-    def encodeDate(self, datestr = None):
+    def encodeDate(self, datestr=None):
         """
         returns an xmlrpclib.DateTime object for all those methods that require one.
         Defaults to current date/time if this is not provided.
@@ -683,13 +698,13 @@ class rhnSession(object):
         if datestr is not None:
             try:
                 time.strptime(datestr, '%Y%m%dT%H:%M:%S')
-                return xmlrpclib.DateTime(datestr)
-            except ValueError, E:
-                return self.fail(E, 'encode date. Error: %s' % E.args[0]) 
+                return xmlrpc.client.DateTime(datestr)
+            except ValueError as E:
+                return self.fail(E, 'encode date. Error: %s' % E.args[0])
         else:
-            return xmlrpclib.DateTime()
-    
-    def decodeDate(self, rpcdate, timefmt = '%Y-%m-%d %H:%M:%S'):
+            return xmlrpc.client.DateTime()
+
+    def decodeDate(self, rpcdate, timefmt='%Y-%m-%d %H:%M:%S'):
         """
         decode an XMLRPC DateTime object to a string in the appropriate format.
         Time format defaults to YYYY-MM-DD HH:MM:SS

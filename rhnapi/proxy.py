@@ -34,57 +34,60 @@ This suggests that they are only useful when run from a system that is
 
 __author__ = "Stuart Sears"
 
+
 def activateProxy(rhn, syscert, proxyver):
-	"""
+    """
     API:
     proxy.activateProxy
 
-	usage:
+    usage:
     activateProxy(rhn, syscert, proxyver)
 
     description:
-	Activates a system as an RHN proxy server, using
-	the given syscert file and proxy version
+    Activates a system as an RHN proxy server, using
+    the given syscert file and proxy version
 
-	returns:
+    returns:
     Bool, or throws exception
 
-	params:
-	rhn                     - an authenticated RHN session.
-	syscert(str)            - /etc/sysconfig/rhn/systemid file content
-	proxyver(str)           - the proxy version to be activated
-	"""
-	try:
-		return rhn.session.proxy.activateProxy(syscert, proxyver) == 1
-	except Exception, E:
-		 return rhn.fail(E, 'activate system %d as an RHN proxy server')
+    params:
+    rhn                     - an authenticated RHN session.
+    syscert(str)            - /etc/sysconfig/rhn/systemid file content
+    proxyver(str)           - the proxy version to be activated
+    """
+    try:
+        return rhn.session.proxy.activateProxy(syscert, proxyver) == 1
+    except Exception as E:
+        return rhn.fail(E, 'activate system %d as an RHN proxy server')
+
 
 # ---------------------------------------------------------------------------- #
 
 def deactivateProxy(rhn, syscert, proxyver):
-	"""
+    """
     API:
     proxy.deactivateProxy
 
-	usage:
+    usage:
     activateProxy(rhn, syscert, proxyver)
 
     description:
-	Activates a system as an RHN proxy server, using
-	the given syscert file and proxy version
+    Activates a system as an RHN proxy server, using
+    the given syscert file and proxy version
 
-	returns: 
+    returns:
     Bool, or throws exception
 
-	params:
-	rhn                     - an authenticated RHN session.
-	syscert(str)            - /etc/sysconfig/rhn/systemid file content
-	proxyver(str)           - the proxy version to be activated
-	"""
-	try:
-		return rhn.session.proxy.deactivateProxy(syscert, proxyver) == 1
-	except Exception, E:
-		 return rhn.fail(E, 'deactivate syscert %s as proxy server' % syscert)
+    params:
+    rhn                     - an authenticated RHN session.
+    syscert(str)            - /etc/sysconfig/rhn/systemid file content
+    proxyver(str)           - the proxy version to be activated
+    """
+    try:
+        return rhn.session.proxy.deactivateProxy(syscert, proxyver) == 1
+    except Exception as E:
+        return rhn.fail(E, 'deactivate syscert %s as proxy server' % syscert)
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -108,8 +111,9 @@ def createMonitoringScout(rhn, syscert):
     """
     try:
         return rhn.session.proxy.createMonitoringScout(syscert)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'create monitoring scout for ')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -133,8 +137,9 @@ def isProxy(rhn, syscert):
     """
     try:
         return rhn.session.proxy.isProxy(syscert) == 1
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'check if system is a proxy server')
+
 
 # ---------------------------------------------------------------------------- #
 
@@ -159,7 +164,7 @@ def listAvailableProxyChannels(rhn, syscert):
     """
     try:
         return rhn.session.proxy.listAvailableProxyVersions(syscert)
-    except Exception, E:
+    except Exception as E:
         return rhn.fail(E, 'list proxy versions')
 
 # footer - do not edit below here
